@@ -495,6 +495,10 @@ A: Not really. For backend, just use `/recipe-implement`. For frontend, use `/re
 
 A: The quality-fixer agents (one in each plugin) automatically fix most issues like test failures, type errors, and lint problems. If something can't be auto-fixed, you'll get clear guidance on what needs attention.
 
+**Q: Is there a version for OpenAI Codex CLI?**
+
+A: Yes! **[codex-workflows](https://github.com/shinpr/codex-workflows)** provides the same end-to-end development workflows for Codex CLI. Same concept — specialized subagents for requirements, design, implementation, and quality checks — adapted for the Codex CLI environment.
+
 **Q: What's the difference between dev-skills and dev-workflows?**
 
 A: `dev-skills` provides only coding best practices as skills (`coding-principles`, `testing-principles`, etc.) — no workflow recipes or agents. `dev-workflows` includes the same skills plus recipes like `/recipe-implement` and specialized agents for full orchestrated development. Use `dev-skills` if you already have your own orchestration and just want the knowledge guides. They should not be installed together. See [Skills Only](#skills-only-for-users-with-existing-workflows) for details and switching instructions.
