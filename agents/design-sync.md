@@ -162,14 +162,14 @@ suggested_action: |
 ### Type Definition Mismatch
 ```
 // Source Design Doc
-interface User {
+User {
   id: string
   email: string
-  role: 'admin' | 'user'
+  role: "admin" | "user"
 }
 
 // Other Design Doc (conflict)
-interface User {
+User {
   id: number        // different type
   email: string
   userRole: string  // different property name and type

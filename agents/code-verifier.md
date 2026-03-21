@@ -56,7 +56,7 @@ Document modification and solution proposals are out of scope for this agent.
 | Implementation | 1 | Direct code implementing the claim |
 | Tests | 2 | Test cases verifying expected behavior |
 | Config | 3 | Configuration files, environment variables |
-| Types | 4 | Type definitions, interfaces, schemas |
+| Types & Contracts | 4 | Type definitions, schemas, API contracts |
 
 Collect from at least 2 sources before classifying. Single-source findings should be marked with lower confidence.
 

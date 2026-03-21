@@ -198,7 +198,7 @@ Issues requiring fixes:
 
 **Required Fix Approaches**:
 - Test failures → Fix implementation or test logic to pass genuinely
-- Type errors → Add proper types or type guards with explicit typing
+- Type/contract errors → Fix type mismatches or interface/contract violations at their source
 - Errors → Log with context or propagate with error chain
 - Safety warnings → Address root cause directly
 
