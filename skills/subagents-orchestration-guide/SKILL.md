@@ -156,7 +156,7 @@ Construct the prompt from the agent's Input Parameters section and the deliverab
 
 Subagents respond in JSON format. Key fields for orchestrator decisions:
 - **requirement-analyzer**: scale, confidence, affectedLayers, adrRequired, scopeDependencies, questions
-- **task-executor**: status (escalation_needed/blocked/completed), testsAdded
+- **task-executor**: status (escalation_needed/blocked/completed), testsAdded, requiresTestReview
 - **quality-fixer**: approved (true/false)
 - **document-reviewer**: approvalReady (true/false)
 - **design-sync**: sync_status (synced/conflicts_found)
@@ -266,7 +266,7 @@ graph TD
     LOOP --> TE[task-executor: Implementation]
     TE --> ESCJUDGE{Escalation judgment}
     ESCJUDGE -->|escalation_needed/blocked| USERESC[Escalate to user]
-    ESCJUDGE -->|testsAdded has int/e2e| ITR[integration-test-reviewer]
+    ESCJUDGE -->|requiresTestReview: true| ITR[integration-test-reviewer]
     ESCJUDGE -->|No issues| QF
     ITR -->|needs_revision| TE
     ITR -->|approved| QF
@@ -312,7 +312,7 @@ Stop autonomous execution and escalate to user in the following cases:
 1. **Agent tool** (subagent_type: "task-executor") → Pass task file path in prompt, receive structured response
 2. Check task-executor response:
    - `status: escalation_needed` or `blocked` → Escalate to user
-   - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**
+   - `requiresTestReview` is `true` → Execute **integration-test-reviewer**
      - `needs_revision` → Return to step 1 with `requiredFixes`
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3

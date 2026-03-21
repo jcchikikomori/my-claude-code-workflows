@@ -98,7 +98,7 @@ For EACH task, YOU MUST:
 2. **Agent tool** (subagent_type per routing table) → Pass task file path in prompt, receive structured response
 3. **CHECK executor response**:
    - `status: "escalation_needed"` or `"blocked"` → STOP and escalate to user
-   - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**
+   - `requiresTestReview` is `true` → Execute **integration-test-reviewer**
      - `needs_revision` → Return to step 2 with `requiredFixes`
      - `approved` → Proceed to step 4
    - `readyForQualityCheck: true` → Proceed to step 4

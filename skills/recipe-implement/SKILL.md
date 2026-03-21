@@ -97,7 +97,7 @@ This agent operates within implement skill scope. Use orchestrator-provided rule
 1. **Agent tool** (subagent_type: "dev-workflows:task-executor") → Pass task file path in prompt, receive structured response
 2. Check task-executor response:
    - `status: escalation_needed` or `blocked` → Escalate to user
-   - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**
+   - `requiresTestReview` is `true` → Execute **integration-test-reviewer**
      - `needs_revision` → Return to step 1 with `requiredFixes`
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3

@@ -141,7 +141,7 @@ Each task uses the standard 4-step cycle with layer-appropriate agents:
 
 ### integration-test-reviewer Placement
 
-When `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts`:
+When `requiresTestReview` is `true`:
 - Standard flow (integration-test-reviewer after task-executor, before quality-fixer)
 
 ## Agent Routing Summary
