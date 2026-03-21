@@ -97,12 +97,21 @@ This agent operates within implement skill scope. Use orchestrator-provided rule
 1. **Agent tool** (subagent_type: "dev-workflows:task-executor") → Pass task file path in prompt, receive structured response
 2. Check task-executor response:
    - `status: escalation_needed` or `blocked` → Escalate to user
-   - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**
+   - `requiresTestReview` is `true` → Execute **integration-test-reviewer**
      - `needs_revision` → Return to step 1 with `requiredFixes`
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3
 3. quality-fixer → Quality check and fixes
 4. git commit → Execute with Bash (on `approved: true`)
+
+### Security Review (After All Tasks Complete)
+
+After all task cycles finish, invoke security-reviewer before the completion report:
+1. **Agent tool** (subagent_type: "dev-workflows:security-reviewer") → Pass Design Doc path and implementation file list
+2. Check response:
+   - `approved` or `approved_with_notes` → Proceed to completion report (include notes if present)
+   - `needs_revision` → Execute task-executor with `requiredFixes`, then quality-fixer, then re-invoke security-reviewer
+   - `blocked` → Escalate to user
 
 ### Test Information Communication
 After acceptance-test-generator execution, when calling work-planner, communicate:

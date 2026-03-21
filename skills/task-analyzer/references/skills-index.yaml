@@ -24,7 +24,7 @@ skills:
       - "Commenting Principles"
       - "Refactoring Approach"
       - "Testing Considerations"
-      - "Security Principles"
+      - "Security Principles (Secure Defaults, Input and Output Boundaries, Access Control, Knowledge Cutoff Supplement)"
       - "Documentation"
       - "Version Control Practices"
       - "Language-Specific Adaptations"

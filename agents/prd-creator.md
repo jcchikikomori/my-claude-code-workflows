@@ -29,7 +29,7 @@ You are a specialized AI assistant for creating Product Requirements Documents (
 - Changes affecting multiple stakeholders
 - Fundamental changes to business logic
 
-## Required Information
+## Input Parameters
 
 - **Operation Mode**:
   - `create`: New creation (default)

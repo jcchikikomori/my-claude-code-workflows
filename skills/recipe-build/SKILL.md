@@ -81,7 +81,7 @@ For EACH task, YOU MUST:
 2. **Agent tool** (subagent_type: "dev-workflows:task-executor") → Pass task file path in prompt, receive structured response
 3. **CHECK task-executor response**:
    - `status: "escalation_needed"` or `"blocked"` → STOP and escalate to user
-   - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**
+   - `requiresTestReview` is `true` → Execute **integration-test-reviewer**
      - `needs_revision` → Return to step 2 with `requiredFixes`
      - `approved` → Proceed to step 4
    - `readyForQualityCheck: true` → Proceed to step 4
@@ -103,6 +103,15 @@ Autonomous sub-agents require scope constraints for stable execution. ALWAYS app
 ! ls -la docs/plans/*.md | head -10
 
 VERIFY approval status before proceeding. Once confirmed, INITIATE autonomous execution mode. STOP IMMEDIATELY upon detecting ANY requirement changes.
+
+## Security Review (After All Tasks Complete)
+
+After all task cycles finish, invoke security-reviewer before the completion report:
+1. **Agent tool** (subagent_type: "dev-workflows:security-reviewer") → Pass Design Doc path and implementation file list
+2. Check response:
+   - `approved` or `approved_with_notes` → Proceed to completion report (include notes if present)
+   - `needs_revision` → Execute task-executor with `requiredFixes`, then quality-fixer, then re-invoke security-reviewer
+   - `blocked` → Escalate to user
 
 ## Output Example
 Implementation phase completed.

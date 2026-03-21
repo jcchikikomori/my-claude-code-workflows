@@ -53,16 +53,17 @@ The following subagents are available:
 2. **task-decomposer**: Appropriate task decomposition of work plans
 3. **task-executor**: Individual task execution and structured response
 4. **integration-test-reviewer**: Review integration/E2E tests for skeleton compliance and quality
+5. **security-reviewer**: Security compliance review against Design Doc and coding-principles after all tasks complete
 
 ### Document Creation Agents
-5. **requirement-analyzer**: Requirement analysis and work scale determination
-6. **prd-creator**: Product Requirements Document creation
-7. **ui-spec-designer**: UI Specification creation from PRD and optional prototype code (frontend/fullstack features)
-8. **technical-designer**: ADR/Design Doc creation
-9. **work-planner**: Work plan creation from Design Doc and test skeletons
-10. **document-reviewer**: Single document quality and rule compliance check
-11. **design-sync**: Design Doc consistency verification across multiple documents
-12. **acceptance-test-generator**: Generate integration and E2E test skeletons from Design Doc ACs
+6. **requirement-analyzer**: Requirement analysis and work scale determination
+7. **prd-creator**: Product Requirements Document creation
+8. **ui-spec-designer**: UI Specification creation from PRD and optional prototype code (frontend/fullstack features)
+9. **technical-designer**: ADR/Design Doc creation
+10. **work-planner**: Work plan creation from Design Doc and test skeletons
+11. **document-reviewer**: Single document quality and rule compliance check
+12. **design-sync**: Design Doc consistency verification across multiple documents
+13. **acceptance-test-generator**: Generate integration and E2E test skeletons from Design Doc ACs
 
 ## Orchestration Principles
 
@@ -134,10 +135,17 @@ The orchestrator coordinates work using only the following tools:
 
 All implementation work (Edit, Write, MultiEdit) is performed by subagents, not the orchestrator.
 
+### Prompt Construction Rule
+Every subagent prompt must include:
+1. Input deliverables with file paths (from previous step or prerequisite check)
+2. Expected action (what the agent should do)
+
+Construct the prompt from the agent's Input Parameters section and the deliverables available at that point in the flow.
+
 ### Call Example (requirement-analyzer)
 - subagent_type: "requirement-analyzer"
 - description: "Requirement analysis"
-- prompt: "Requirements: [user requirements] Please perform requirement analysis and scale determination"
+- prompt: "Requirements: [user requirements]. Context: [any relevant context]. Perform requirement analysis and scale determination."
 
 ### Call Example (task-executor)
 - subagent_type: "task-executor"
@@ -148,11 +156,12 @@ All implementation work (Edit, Write, MultiEdit) is performed by subagents, not 
 
 Subagents respond in JSON format. Key fields for orchestrator decisions:
 - **requirement-analyzer**: scale, confidence, affectedLayers, adrRequired, scopeDependencies, questions
-- **task-executor**: status (escalation_needed/blocked/completed), testsAdded
+- **task-executor**: status (escalation_needed/blocked/completed), testsAdded, requiresTestReview
 - **quality-fixer**: approved (true/false)
 - **document-reviewer**: approvalReady (true/false)
 - **design-sync**: sync_status (synced/conflicts_found)
 - **integration-test-reviewer**: status (approved/needs_revision/blocked), requiredFixes
+- **security-reviewer**: status (approved/approved_with_notes/needs_revision/blocked), findings, notes, requiredFixes
 - **acceptance-test-generator**: status, generatedFiles
 
 
@@ -257,14 +266,19 @@ graph TD
     LOOP --> TE[task-executor: Implementation]
     TE --> ESCJUDGE{Escalation judgment}
     ESCJUDGE -->|escalation_needed/blocked| USERESC[Escalate to user]
-    ESCJUDGE -->|testsAdded has int/e2e| ITR[integration-test-reviewer]
+    ESCJUDGE -->|requiresTestReview: true| ITR[integration-test-reviewer]
     ESCJUDGE -->|No issues| QF
     ITR -->|needs_revision| TE
     ITR -->|approved| QF
     QF[quality-fixer: Quality check and fixes] --> COMMIT[Orchestrator: Execute git commit]
     COMMIT --> CHECK{Any remaining tasks?}
     CHECK -->|Yes| LOOP
-    CHECK -->|No| REPORT[Completion report]
+    CHECK -->|No| SEC[security-reviewer: Security review]
+    SEC -->|approved/approved_with_notes| REPORT[Completion report]
+    SEC -->|needs_revision| SECFIX[task-executor: Security fixes]
+    SECFIX --> QF2[quality-fixer: Quality check]
+    QF2 --> SEC
+    SEC -->|blocked| USERESC
 
     LOOP --> INTERRUPT{User input?}
     INTERRUPT -->|None| TE
@@ -298,7 +312,7 @@ Stop autonomous execution and escalate to user in the following cases:
 1. **Agent tool** (subagent_type: "task-executor") → Pass task file path in prompt, receive structured response
 2. Check task-executor response:
    - `status: escalation_needed` or `blocked` → Escalate to user
-   - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**
+   - `requiresTestReview` is `true` → Execute **integration-test-reviewer**
      - `needs_revision` → Return to step 1 with `requiredFixes`
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3
