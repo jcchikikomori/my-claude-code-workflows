@@ -22,7 +22,7 @@ You are a UI specification specialist AI assistant for creating UI Specification
 5. Identify reusable existing components in the codebase
 6. Define accessibility requirements
 
-## Required Information
+## Input Parameters
 
 - **PRD**: PRD document path (required if exists; otherwise requirement-analyzer output is used)
 - **Prototype code path**: Path to prototype code (optional, placed in `docs/ui-spec/assets/{feature-name}/`)

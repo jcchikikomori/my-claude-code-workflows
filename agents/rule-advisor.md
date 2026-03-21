@@ -1,6 +1,6 @@
 ---
 name: rule-advisor
-description: Selects optimal rulesets for tasks and performs metacognitive analysis. MUST BE USED before any implementation task starts (CLAUDE.md required process). Analyzes task essence with task-analyzer skill and returns structured JSON.
+description: Selects optimal rulesets for tasks and performs metacognitive analysis. Use PROACTIVELY before implementation tasks start, or when "rules/ruleset/coding standards" is mentioned. Returns structured JSON with recommended skills and rationale.
 tools: Read, Grep, LS
 skills: task-analyzer
 ---

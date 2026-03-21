@@ -36,7 +36,7 @@ git diff --name-only main...HEAD
 Invoke code-reviewer using Agent tool:
 - `subagent_type`: "dev-workflows-frontend:code-reviewer"
 - `description`: "Code compliance review"
-- `prompt`: "Design Doc: [path]. Implementation files: [git diff file list]. Review mode: full. Validate Design Doc compliance and return structured JSON report with complianceRate, verdict, unfulfilledItems, and qualityIssues."
+- `prompt`: "Design Doc: [path]. Implementation files: [git diff file list]. Review mode: full. Validate Design Doc compliance and return structured JSON report with complianceRate, verdict, acceptanceCriteria, and qualityIssues."
 
 **Store output as**: `$STEP_2_OUTPUT`
 
@@ -65,8 +65,10 @@ Invoke security-reviewer using Agent tool:
 ```
 Code Compliance: [complianceRate from code-reviewer]
   Verdict: [verdict from code-reviewer]
-  Unfulfilled items:
-  - [item] (priority) — [solution]
+  Acceptance Criteria:
+  - [fulfilled] [item]
+  - [partially_fulfilled] [item]: [gap] — [suggestion]
+  - [unfulfilled] [item]: [gap] — [suggestion]
 
 Security Review: [status from security-reviewer]
   Findings by category:
@@ -84,14 +86,39 @@ If both pass and user selects `n`: Skip fix steps, proceed to Final Report.
 If user selects `y`:
 
 ## Pre-fix Metacognition
-**Required**: `rule-advisor → TaskCreate → task-executor-frontend → quality-fixer-frontend`
 
-1. **Execute rule-advisor**: Understand fix essence (symptomatic treatment vs root solution)
-2. **Register tasks using TaskCreate**: Register work steps. Always include: first "Confirm skill constraints", final "Verify skill fidelity". Create task file following task template (see documentation-criteria skill) → `docs/plans/tasks/review-fixes-YYYYMMDD.md`. Include both code compliance issues and security requiredFixes.
-3. **Execute task-executor-frontend**: Staged auto-fixes (stops at 5 files)
-4. **Execute quality-fixer-frontend**: Confirm quality gate passage
-5. **Re-validate code-reviewer**: Measure improvement
-6. **Re-validate security-reviewer** (only if security fixes were applied)
+### 5. Execute rule-advisor
+Invoke rule-advisor using Agent tool:
+- `subagent_type`: "dev-workflows-frontend:rule-advisor"
+- `description`: "Analyze fix approach"
+- `prompt`: "Task: Fix review findings. Code issues: $STEP_2_OUTPUT. Security findings: $STEP_3_OUTPUT. Analyze fix essence and select appropriate rules."
+
+### 6. Create Task File
+Register work steps using TaskCreate. Always include: first "Confirm skill constraints", final "Verify skill fidelity". Create task file following task template (see documentation-criteria skill) → `docs/plans/tasks/review-fixes-YYYYMMDD.md`. Include both code compliance issues and security requiredFixes.
+
+### 7. Execute Fixes
+Invoke task-executor-frontend using Agent tool:
+- `subagent_type`: "dev-workflows-frontend:task-executor-frontend"
+- `description`: "Execute review fixes"
+- `prompt`: "Task file: docs/plans/tasks/review-fixes-YYYYMMDD.md. Apply staged fixes (stops at 5 files)."
+
+### 8. Quality Check
+Invoke quality-fixer-frontend using Agent tool:
+- `subagent_type`: "dev-workflows-frontend:quality-fixer-frontend"
+- `description`: "Quality gate check"
+- `prompt`: "Confirm quality gate passage for fixed files."
+
+### 9. Re-validate code-reviewer
+Invoke code-reviewer using Agent tool:
+- `subagent_type`: "dev-workflows-frontend:code-reviewer"
+- `description`: "Re-validate compliance"
+- `prompt`: "Re-validate Design Doc compliance after fixes. Prior issues: $STEP_2_OUTPUT. Design Doc: [path]. Implementation files: [file list]."
+
+### 10. Re-validate security-reviewer (only if security fixes were applied)
+Invoke security-reviewer using Agent tool:
+- `subagent_type`: "dev-workflows-frontend:security-reviewer"
+- `description`: "Re-validate security"
+- `prompt`: "Re-validate security after fixes. Prior findings: $STEP_3_OUTPUT. Design Doc: [path]. Implementation files: [file list]."
 
 ### Final Report
 ```

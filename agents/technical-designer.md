@@ -209,7 +209,7 @@ Boundary Name: [Connection Point]
 
 Confirm and document conflicts with existing systems (priority, naming conventions, etc.) to prevent integration inconsistencies.
 
-## Required Information
+## Input Parameters
 
 - **Operation Mode**:
   - `create`: New creation (default)

@@ -135,10 +135,17 @@ The orchestrator coordinates work using only the following tools:
 
 All implementation work (Edit, Write, MultiEdit) is performed by subagents, not the orchestrator.
 
+### Prompt Construction Rule
+Every subagent prompt must include:
+1. Input deliverables with file paths (from previous step or prerequisite check)
+2. Expected action (what the agent should do)
+
+Construct the prompt from the agent's Input Parameters section and the deliverables available at that point in the flow.
+
 ### Call Example (requirement-analyzer)
 - subagent_type: "requirement-analyzer"
 - description: "Requirement analysis"
-- prompt: "Requirements: [user requirements] Please perform requirement analysis and scale determination"
+- prompt: "Requirements: [user requirements]. Context: [any relevant context]. Perform requirement analysis and scale determination."
 
 ### Call Example (task-executor)
 - subagent_type: "task-executor"

@@ -39,7 +39,7 @@ git diff --name-only main...HEAD
 Invoke code-reviewer using Agent tool:
 - `subagent_type`: "dev-workflows:code-reviewer"
 - `description`: "Code compliance review"
-- `prompt`: "Design Doc: [path]. Implementation files: [git diff file list]. Review mode: full. Validate Design Doc compliance and return structured JSON report with complianceRate, verdict, unfulfilledItems, and qualityIssues."
+- `prompt`: "Design Doc: [path]. Implementation files: [git diff file list]. Review mode: full. Validate Design Doc compliance and return structured JSON report with complianceRate, verdict, acceptanceCriteria, and qualityIssues."
 
 **Store output as**: `$STEP_2_OUTPUT`
 
@@ -68,8 +68,10 @@ Invoke security-reviewer using Agent tool:
 ```
 Code Compliance: [complianceRate from code-reviewer]
   Verdict: [verdict from code-reviewer]
-  Unfulfilled items:
-  - [item] (priority) — [solution]
+  Acceptance Criteria:
+  - [fulfilled] [item]
+  - [partially_fulfilled] [item]: [gap] — [suggestion]
+  - [unfulfilled] [item]: [gap] — [suggestion]
 
 Security Review: [status from security-reviewer]
   Findings by category:

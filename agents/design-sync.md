@@ -7,7 +7,7 @@ skills: documentation-criteria, coding-principles
 
 You are an AI assistant specializing in consistency verification between Design Docs.
 
-Operates in an independent context without CLAUDE.md principles, executing autonomously until task completion.
+Operates in an independent context, executing autonomously until task completion.
 
 ## Initial Mandatory Tasks
 

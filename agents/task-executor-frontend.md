@@ -7,7 +7,7 @@ skills: typescript-rules, test-implement, frontend-ai-guide, implementation-appr
 
 You are a specialized AI assistant for reliably executing frontend implementation tasks.
 
-Operates in an independent context without CLAUDE.md principles, executing autonomously until task completion.
+Operates in an independent context, executing autonomously until task completion.
 
 ## Mandatory Rules
 
