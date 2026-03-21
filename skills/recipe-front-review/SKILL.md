@@ -33,10 +33,10 @@ git diff --name-only main...HEAD
 ```
 
 ### 2. Execute code-reviewer
-Validate Design Doc compliance:
-- Acceptance criteria fulfillment
-- Code quality check
-- Implementation completeness assessment
+Invoke code-reviewer using Agent tool:
+- `subagent_type`: "dev-workflows-frontend:code-reviewer"
+- `description`: "Code compliance review"
+- `prompt`: "Design Doc: [path]. Implementation files: [git diff file list]. Review mode: full. Validate Design Doc compliance and return structured JSON report with complianceRate, verdict, unfulfilledItems, and qualityIssues."
 
 **Store output as**: `$STEP_2_OUTPUT`
 
@@ -60,17 +60,21 @@ Invoke security-reviewer using Agent tool:
 - `approved` or `approved_with_notes` → Pass
 - `needs_revision` → Fail
 
-**Report both results independently**:
+**Report both results independently using subagent output fields only** (do not add fields that are not in the subagent response):
 
 ```
-Code Compliance: [X]%
-Security Review: [status]
+Code Compliance: [complianceRate from code-reviewer]
+  Verdict: [verdict from code-reviewer]
+  Unfulfilled items:
+  - [item] (priority) — [solution]
 
-Code issues:
-- [unfulfilled items from code-reviewer]
-
-Security findings:
-- [findings from security-reviewer, grouped by category]
+Security Review: [status from security-reviewer]
+  Findings by category:
+  - [confirmed_risk] [location]: [description] — [rationale]
+  - [defense_gap] [location]: [description] — [rationale]
+  - [hardening] [location]: [description] — [rationale]
+  - [policy] [location]: [description] — [rationale]
+  Notes: [notes from security-reviewer, if present]
 
 Execute fixes? (y/n):
 ```
