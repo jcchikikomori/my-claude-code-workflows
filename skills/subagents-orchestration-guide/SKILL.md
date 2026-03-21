@@ -53,16 +53,17 @@ The following subagents are available:
 2. **task-decomposer**: Appropriate task decomposition of work plans
 3. **task-executor**: Individual task execution and structured response
 4. **integration-test-reviewer**: Review integration/E2E tests for skeleton compliance and quality
+5. **security-reviewer**: Security compliance review against Design Doc and coding-principles after all tasks complete
 
 ### Document Creation Agents
-5. **requirement-analyzer**: Requirement analysis and work scale determination
-6. **prd-creator**: Product Requirements Document creation
-7. **ui-spec-designer**: UI Specification creation from PRD and optional prototype code (frontend/fullstack features)
-8. **technical-designer**: ADR/Design Doc creation
-9. **work-planner**: Work plan creation from Design Doc and test skeletons
-10. **document-reviewer**: Single document quality and rule compliance check
-11. **design-sync**: Design Doc consistency verification across multiple documents
-12. **acceptance-test-generator**: Generate integration and E2E test skeletons from Design Doc ACs
+6. **requirement-analyzer**: Requirement analysis and work scale determination
+7. **prd-creator**: Product Requirements Document creation
+8. **ui-spec-designer**: UI Specification creation from PRD and optional prototype code (frontend/fullstack features)
+9. **technical-designer**: ADR/Design Doc creation
+10. **work-planner**: Work plan creation from Design Doc and test skeletons
+11. **document-reviewer**: Single document quality and rule compliance check
+12. **design-sync**: Design Doc consistency verification across multiple documents
+13. **acceptance-test-generator**: Generate integration and E2E test skeletons from Design Doc ACs
 
 ## Orchestration Principles
 
@@ -153,6 +154,7 @@ Subagents respond in JSON format. Key fields for orchestrator decisions:
 - **document-reviewer**: approvalReady (true/false)
 - **design-sync**: sync_status (synced/conflicts_found)
 - **integration-test-reviewer**: status (approved/needs_revision/blocked), requiredFixes
+- **security-reviewer**: status (approved/approved_with_notes/needs_revision/blocked), findings, notes, requiredFixes
 - **acceptance-test-generator**: status, generatedFiles
 
 
@@ -264,7 +266,12 @@ graph TD
     QF[quality-fixer: Quality check and fixes] --> COMMIT[Orchestrator: Execute git commit]
     COMMIT --> CHECK{Any remaining tasks?}
     CHECK -->|Yes| LOOP
-    CHECK -->|No| REPORT[Completion report]
+    CHECK -->|No| SEC[security-reviewer: Security review]
+    SEC -->|approved/approved_with_notes| REPORT[Completion report]
+    SEC -->|needs_revision| SECFIX[task-executor: Security fixes]
+    SECFIX --> QF2[quality-fixer: Quality check]
+    QF2 --> SEC
+    SEC -->|blocked| USERESC
 
     LOOP --> INTERRUPT{User input?}
     INTERRUPT -->|None| TE

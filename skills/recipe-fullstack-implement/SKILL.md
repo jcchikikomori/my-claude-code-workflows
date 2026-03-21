@@ -125,6 +125,15 @@ This agent operates within fullstack-implement skill scope. Use orchestrator-pro
 3. Quality-fixer MUST run after each executor (no skipping)
 4. Commit MUST execute when quality-fixer returns `approved: true` (do not defer to end)
 
+### Security Review (After All Tasks Complete)
+
+After all task cycles finish, invoke security-reviewer before the completion report:
+1. **Agent tool** (subagent_type: "dev-workflows:security-reviewer") → Pass Design Doc path(s) and implementation file list
+2. Check response:
+   - `approved` or `approved_with_notes` → Proceed to completion report (include notes if present)
+   - `needs_revision` → Execute layer-appropriate task-executor with `requiredFixes`, then quality-fixer, then re-invoke security-reviewer
+   - `blocked` → Escalate to user
+
 ### Test Information Communication
 After acceptance-test-generator execution, when calling work-planner, communicate:
 - Generated integration test file path

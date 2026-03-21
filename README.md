@@ -244,6 +244,7 @@ These agents work the same way whether you're building a REST API or a React app
 | **solver** | Generates solutions with tradeoff analysis and implementation steps |
 | **scope-discoverer** | Discovers functional scope from codebase for reverse engineering |
 | **code-verifier** | Validates consistency between documentation and code implementation |
+| **security-reviewer** | Reviews implementation for security compliance after all tasks complete |
 
 ### Backend-Specific Agents (dev-workflows)
 

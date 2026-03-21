@@ -104,6 +104,15 @@ This agent operates within implement skill scope. Use orchestrator-provided rule
 3. quality-fixer → Quality check and fixes
 4. git commit → Execute with Bash (on `approved: true`)
 
+### Security Review (After All Tasks Complete)
+
+After all task cycles finish, invoke security-reviewer before the completion report:
+1. **Agent tool** (subagent_type: "dev-workflows:security-reviewer") → Pass Design Doc path and implementation file list
+2. Check response:
+   - `approved` or `approved_with_notes` → Proceed to completion report (include notes if present)
+   - `needs_revision` → Execute task-executor with `requiredFixes`, then quality-fixer, then re-invoke security-reviewer
+   - `blocked` → Escalate to user
+
 ### Test Information Communication
 After acceptance-test-generator execution, when calling work-planner, communicate:
 - Generated integration test file path

@@ -128,6 +128,15 @@ Autonomous sub-agents require scope constraints for stable execution. ALWAYS app
 
 VERIFY approval status before proceeding. Once confirmed, INITIATE autonomous execution mode. STOP IMMEDIATELY upon detecting ANY requirement changes.
 
+## Security Review (After All Tasks Complete)
+
+After all task cycles finish, invoke security-reviewer before the completion report:
+1. **Agent tool** (subagent_type: "dev-workflows-frontend:security-reviewer") → Pass Design Doc path and implementation file list
+2. Check response:
+   - `approved` or `approved_with_notes` → Proceed to completion report (include notes if present)
+   - `needs_revision` → Execute task-executor-frontend with `requiredFixes`, then quality-fixer-frontend, then re-invoke security-reviewer
+   - `blocked` → Escalate to user
+
 ## Output Example
 Frontend implementation phase completed.
 - Task decomposition: Generated under docs/plans/tasks/
