@@ -76,8 +76,8 @@ The fullstack recipes create separate Design Docs per layer (backend + frontend)
 
 ### External Plugins
 ```bash
-# Install claude-code-discover (product discovery before implementation)
-/plugin install claude-code-discover@claude-code-workflows
+# Install discover (product discovery before implementation)
+/plugin install discover@claude-code-workflows
 
 # Install metronome (prevents shortcut-taking behavior)
 /plugin install metronome@claude-code-workflows
