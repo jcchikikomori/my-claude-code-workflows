@@ -106,7 +106,7 @@ description: Documentation creation criteria including PRD, ADR, Design Doc, and
 **Excludes**:
 - Technical implementation details (-> Design Doc)
 - API contracts and data layer design (-> Design Doc)
-- Test implementation (-> Test Strategy in Design Doc)
+- Test implementation (-> acceptance-test-generator skeletons)
 - Implementation schedule (-> Work Plan)
 
 **Required Structural Elements**:
@@ -132,7 +132,6 @@ description: Documentation creation criteria including PRD, ADR, Design Doc, and
 - **Technical dependencies and implementation constraints** (required implementation order)
 - Interface and contract definitions
 - Data flow and component design
-- **E2E verification procedures at integration points**
 - **Acceptance criteria (measurable format)**
 - Change impact map (clearly specify direct impact/indirect impact/no ripple effect)
 - Complete enumeration of integration points
@@ -171,7 +170,7 @@ Interface Change Matrix:
 **Includes**:
 - Task breakdown and dependencies (maximum 2 levels)
 - Schedule and duration estimates
-- **Copy E2E verification procedures from Design Doc** (cannot delete, can add)
+- **Include test skeleton file paths from acceptance-test-generator** (integration and E2E)
 - **Phase 4 Quality Assurance Phase (required)**
 - Progress records (checkbox format)
 
