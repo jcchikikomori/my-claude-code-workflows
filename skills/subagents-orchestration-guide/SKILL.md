@@ -117,7 +117,7 @@ Autonomous execution MUST stop and wait for user input at these points.
 
 ### Execution Method
 All subagent invocation uses the **Agent tool** with:
-- `subagent_type`: Agent name (e.g., "task-executor")
+- `subagent_type`: Fully qualified agent name (e.g., "dev-workflows:task-executor")
 - `description`: Concise task description (3-5 words)
 - `prompt`: Specific instructions including deliverable paths
 
@@ -143,12 +143,12 @@ Every subagent prompt must include:
 Construct the prompt from the agent's Input Parameters section and the deliverables available at that point in the flow.
 
 ### Call Example (requirement-analyzer)
-- subagent_type: "requirement-analyzer"
+- subagent_type: "dev-workflows:requirement-analyzer"
 - description: "Requirement analysis"
 - prompt: "Requirements: [user requirements]. Context: [any relevant context]. Perform requirement analysis and scale determination."
 
 ### Call Example (task-executor)
-- subagent_type: "task-executor"
+- subagent_type: "dev-workflows:task-executor"
 - description: "Task execution"
 - prompt: "Task file: docs/plans/tasks/[filename].md Please complete the implementation"
 
@@ -231,7 +231,7 @@ According to scale determination:
 
 ### Small Scale (1-2 Files) - 2 Steps
 
-1. Create simplified plan **[Stop: Batch approval]**
+1. work-planner → Simplified work plan creation **[Stop: Batch approval]**
 2. Direct implementation → Completion report
 
 ## Autonomous Execution Mode

@@ -66,7 +66,7 @@ Invoke **document-reviewer** for UI Spec review, then **[STOP]** for user approv
 - **Frontend Design Doc must reference the approved UI Spec** (pass UI Spec path to technical-designer-frontend)
 - Execute document-reviewer once per Design Doc (separate invocations)
 - Run design-sync for cross-layer consistency verification
-- Pass all Design Docs to work-planner with vertical slicing instruction
+- Pass all Design Docs to work-planner (subagent_type: "dev-workflows:work-planner") with vertical slicing instruction
 
 ### 5. Register All Flow Steps Using TaskCreate (MANDATORY)
 
@@ -135,7 +135,7 @@ After all task cycles finish, invoke security-reviewer before the completion rep
    - `blocked` → Escalate to user
 
 ### Test Information Communication
-After acceptance-test-generator execution, when calling work-planner, communicate:
+After acceptance-test-generator execution, when invoking work-planner (subagent_type: "dev-workflows:work-planner"), communicate:
 - Generated integration test file path
 - Generated E2E test file path
 - Explicit note that integration tests are created simultaneously with implementation, E2E tests are executed after all implementations

@@ -37,7 +37,7 @@ Analyze task file existence state and determine the action required:
 |-------|----------|-------------|
 | Tasks exist | .md files in tasks/ directory | User's execution instruction serves as batch approval → Enter autonomous execution immediately |
 | No tasks + plan exists | Plan exists but no task files | Confirm with user → run task-decomposer |
-| Neither exists | No plan or task files | Error: Prerequisites not met |
+| Neither exists | No plan or task files | Report missing prerequisites to user and stop. Use recipe-plan to create work plan first |
 
 ## Task Decomposition Phase (Conditional)
 

@@ -44,8 +44,15 @@ Follow the planning process below:
    - Pass generation results to next process according to subagents-orchestration-guide skill coordination specification
 
 ### Step 3: Work Plan Creation
-- Create work plan with work-planner
-- Utilize deliverables from previous process according to subagents-orchestration-guide skill coordination specification
+Invoke work-planner using Agent tool:
+- `subagent_type`: "dev-workflows:work-planner"
+- `description`: "Work plan creation"
+- If test skeletons were generated in Step 2:
+  `prompt`: "Create work plan from Design Doc at [path]. Integration test file: [integration test path from step 2]. E2E test file: [E2E test path from step 2]. Integration tests are created simultaneously with each phase implementation, E2E tests are executed only in final phase."
+- If test skeletons were not generated:
+  `prompt`: "Create work plan from Design Doc at [path]."
+
+- Follow subagents-orchestration-guide Prompt Construction Rule for additional prompt parameters
 - Interact with user to complete plan and obtain approval for plan content
 - Clarify specific implementation steps and risks
 
