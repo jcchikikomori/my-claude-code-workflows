@@ -231,7 +231,7 @@ According to scale determination:
 
 ### Small Scale (1-2 Files) - 2 Steps
 
-1. Create simplified plan **[Stop: Batch approval]**
+1. work-planner → Simplified work plan creation **[Stop: Batch approval]**
 2. Direct implementation → Completion report
 
 ## Autonomous Execution Mode

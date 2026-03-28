@@ -114,7 +114,7 @@ After all task cycles finish, invoke security-reviewer before the completion rep
    - `blocked` → Escalate to user
 
 ### Test Information Communication
-After acceptance-test-generator execution, when calling work-planner, communicate:
+After acceptance-test-generator execution, when invoking work-planner (subagent_type: "dev-workflows:work-planner"), communicate:
 - Generated integration test file path
 - Generated E2E test file path
 - Explicit note that integration tests are created simultaneously with implementation, E2E tests are executed after all implementations
