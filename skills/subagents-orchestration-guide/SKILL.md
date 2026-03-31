@@ -156,8 +156,8 @@ Construct the prompt from the agent's Input Parameters section and the deliverab
 
 Subagents respond in JSON format. Key fields for orchestrator decisions:
 - **requirement-analyzer**: scale, confidence, affectedLayers, adrRequired, scopeDependencies, questions
-- **task-executor**: status (escalation_needed/blocked/completed), testsAdded, requiresTestReview
-- **quality-fixer**: approved (true/false)
+- **task-executor**: status (escalation_needed/completed), escalation_type (design_compliance_violation/similar_function_found/investigation_target_not_found/out_of_scope_file), testsAdded, requiresTestReview
+- **quality-fixer**: status (approved/blocked). Discriminate blocked type by `reason` field: `"Cannot determine due to unclear specification"` → read `blockingIssues[]` for specification details; `"Execution prerequisites not met"` → read `missingPrerequisites[]` with `resolutionSteps` — present these to the user as actionable next steps
 - **document-reviewer**: approvalReady (true/false)
 - **design-sync**: sync_status (synced/conflicts_found)
 - **integration-test-reviewer**: status (approved/needs_revision/blocked), requiredFixes

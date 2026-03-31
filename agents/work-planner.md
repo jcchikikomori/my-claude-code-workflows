@@ -123,7 +123,26 @@ Read test skeleton files (integration tests, E2E tests) with the Read tool and e
    - `// @complexity: high` → Subdivide tasks or estimate higher effort
    - `// @complexity: low` → Consider combining multiple tests into one task
 
-#### Step 3: Classify and Place Tests
+#### Step 3: Extract Environment Prerequisites from E2E Skeletons
+
+When E2E test skeletons are provided, scan for environment prerequisites in two stages:
+
+**Stage 1: Detect precondition patterns** — scan all E2E skeletons and list every detected precondition:
+- `Preconditions:` or `Arrange:` comment annotations mentioning seed data, test users, subscriptions, or specific DB state
+- `@dependency: full-system` combined with auth/login setup code
+- References to environment variables (`E2E_*`, `TEST_*`)
+- External service references requiring HTTP mock/intercept patterns in test code
+
+**Stage 2: Generate setup tasks** — for each detected precondition, create a corresponding Phase 0 task. Common categories include:
+- **Seed data** → "Create E2E seed data script (test users, required records)"
+- **Auth fixture** → "Implement E2E auth fixture using application's login flow"
+- **External service mocks** → "Configure external service mocks for E2E tests"
+- **Environment configuration** → "Define E2E environment variables and document setup"
+- **Other detected preconditions** → Create a setup task matching the detected category
+
+Place all environment setup tasks in Phase 0 (before any implementation tasks). Mark with `@category: e2e-setup` for traceability.
+
+#### Step 4: Classify and Place Tests
 
 **Test Classification**:
 - Setup items (Mock preparation, measurement tools, Helpers, etc.) → Prioritize in Phase 1
@@ -162,7 +181,7 @@ Compose phases based on technical dependencies and implementation approach from 
 Always include quality assurance (all tests passing, acceptance criteria achieved) in final phase.
 
 ### Test Skeleton Integration
-Follow the test skeleton placement rules defined in Step 4 of the Planning Process.
+Follow the test skeleton placement rules defined in the Planning Process (Compose Phases step).
 
 ## Diagram Creation (using mermaid notation)
 
@@ -175,6 +194,9 @@ When creating work plans, **Phase Structure Diagrams** and **Task Dependency Dia
 - [ ] All requirements converted to tasks
 - [ ] Quality assurance exists in final phase
 - [ ] Test skeleton file paths listed in corresponding phases (when provided)
+- [ ] E2E environment prerequisites addressed (when E2E skeletons provided)
+  - [ ] Seed data, auth fixture, and external service mock tasks generated
+  - [ ] Environment setup tasks placed in Phase 0
 - [ ] Test design information reflected (only when provided)
   - [ ] Setup tasks placed in first phase
   - [ ] Risk level-based prioritization applied

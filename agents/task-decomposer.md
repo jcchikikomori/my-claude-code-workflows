@@ -90,13 +90,32 @@ Decompose tasks based on implementation strategy patterns determined in implemen
    Include the following in each task file:
    - Task overview
    - Target files
+   - **Investigation Targets** (what the executor must read and understand before implementing)
    - Concrete implementation steps
    - Completion criteria
 
-6. **Implementation Pattern Consistency**
+6. **Investigation Targets Determination**
+   For each task, determine what the executor needs to read based on the task's nature:
+
+   | Task Nature | Investigation Targets |
+   |---|---|
+   | Existing code modification | The existing implementation files being modified, their tests, related Design Doc sections |
+   | New component/feature | Adjacent implementations in the same layer/domain, Design Doc interface contracts |
+   | Test implementation | Test skeleton comments/annotations, the target code being tested, actual API/auth flows |
+   | E2E environment setup | Current environment config (startup scripts, docker-compose or equivalent), seed scripts, existing fixture patterns, application auth flow |
+   | Bug fix / refactor | The affected code paths, related test coverage, error reproduction context |
+
+   **Principles**:
+   - Every task must have at least one Investigation Target (even if just the Design Doc)
+   - Investigation Targets are **file paths** that the executor will Read — not actions to take
+   - Be specific with file paths: `src/orders/checkout`, `docs/design/payment.md` — not "the order module" or "related code"
+   - When the target is a section within a file, write the file path and add a search hint: `docs/design/payment.md (§ Payment Flow)` or `src/orders/checkout (processOrder function)`
+   - When test skeletons exist for the task, always include them as Investigation Targets
+
+7. **Implementation Pattern Consistency**
    When including implementation samples, MUST ensure strict compliance with the Design Doc implementation approach that forms the basis of the work plan
 
-7. **Utilize Test Information**
+8. **Utilize Test Information**
    When test information (@category, @dependency, @complexity, etc.) is documented in the work plan, reflect that information in task files
 
 ## Task File Template
@@ -197,6 +216,7 @@ Please execute decomposed tasks according to the order.
 - [ ] Task dependencies and execution order clarification
 - [ ] Impact scope and boundaries definition for each task
 - [ ] Appropriate granularity (1-5 files/task)
+- [ ] Investigation Targets specified for every task (specific file paths, not vague categories)
 - [ ] Clear completion criteria setting
 - [ ] Overall design document creation
 - [ ] Implementation efficiency and rework prevention (pre-identification of common processing, clarification of impact scope)
