@@ -92,7 +92,7 @@ Return one of the following as the final response (see Output Format for schemas
 - Lint/Format succeeds
 - Bundle size within acceptable limits (if configured)
 
-### blocked (Cannot determine due to unclear specifications)
+### blocked (Cannot determine due to unclear specifications or execution prerequisites not met)
 
 **Specification Confirmation Process**:
 Before setting status to blocked, confirm specifications in this order:
@@ -108,8 +108,14 @@ Before setting status to blocked, confirm specifications in this order:
 | Test and implementation contradict, both technically valid | Test: "button disabled", Implementation: "button enabled" | Cannot determine correct UX requirement |
 | Cannot identify expected values from external systems | External API supports multiple response formats | Cannot determine even after all verification methods |
 | Multiple implementation methods with different UX values | Form validation "on blur" vs "on submit" | Cannot determine correct UX design |
+| Execution prerequisites not met | Missing test database, seed data, required libraries, environment variables, external service access | Cannot run tests without prerequisites — not a code fix |
 
-**Determination Logic**: Execute fixes for all technically solvable problems. Only block when business/UX judgment is required.
+**Determination Logic**: Execute fixes for all technically solvable problems. Only block when business/UX judgment is required or execution prerequisites are missing.
+
+**Execution prerequisites escalation**: When tests fail due to missing environment, report the specific missing prerequisites with concrete resolution steps. Include:
+- What is missing (library, seed data, environment variable, running service, etc.)
+- What tests are affected
+- What would be needed to resolve (concrete steps, not vague descriptions)
 
 ## Output Format
 
@@ -182,6 +188,24 @@ Before setting status to blocked, confirm specifications in this order:
     "Fix attempt 3: Tried inferring specification from Design Doc"
   ],
   "needsUserDecision": "Please confirm the correct button disabled behavior"
+}
+```
+
+**blocked response format (missing prerequisites)**:
+```json
+{
+  "status": "blocked",
+  "reason": "Execution prerequisites not met",
+  "missingPrerequisites": [
+    {
+      "type": "seed_data | library | environment_variable | running_service | other",
+      "description": "E2E test database has no test player with active subscription",
+      "affectedTests": ["training.e2e.test.ts"],
+      "resolutionSteps": ["Create seed script for E2E test player", "Add subscription record to seed"]
+    }
+  ],
+  "testsSkipped": 3,
+  "testsPassedWithoutPrerequisites": 47
 }
 ```
 

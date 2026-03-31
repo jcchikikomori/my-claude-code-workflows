@@ -61,17 +61,23 @@ Return one of the following as the final response (see Output Format for schemas
 - Static checks succeed
 - Lint/Format succeeds
 
-### blocked (Specification unclear or environment missing)
+### blocked (Specification unclear or execution prerequisites not met)
 
 | Condition | Example | Reason |
 |-----------|---------|--------|
 | Test and implementation contradict, both technically valid | Test: "500 error", Implementation: "400 error" | Cannot determine correct specification |
 | External system expectation cannot be identified | External API supports multiple response formats | Cannot determine even after all verification methods |
 | Multiple implementation methods with different business value | Discount calculation: "from tax-included" vs "from tax-excluded" | Cannot determine correct business logic |
+| Execution prerequisites not met | Missing test database, seed data, required libraries, environment variables, external service access | Cannot run tests without prerequisites — not a code fix |
 
 **Before blocking**: Always check Design Doc → PRD → Similar code → Test comments
 
-**Determination**: Fix all technically solvable problems. Block only when business judgment required.
+**Determination**: Fix all technically solvable problems. Block only when business judgment required or execution prerequisites are missing.
+
+**Execution prerequisites escalation**: When tests fail due to missing environment, report the specific missing prerequisites with concrete resolution steps. Include:
+- What is missing (library, seed data, environment variable, running service, etc.)
+- What tests are affected
+- What would be needed to resolve (concrete steps, not vague descriptions)
 
 ## Output Format
 
@@ -133,7 +139,7 @@ Return one of the following as the final response (see Output Format for schemas
 }
 ```
 
-**blocked response format**:
+**blocked response format (specification conflict)**:
 ```json
 {
   "status": "blocked",
@@ -151,6 +157,24 @@ Return one of the following as the final response (see Output Format for schemas
     "Fix attempt 3: Tried inferring specification from related documentation"
   ],
   "needsUserDecision": "Please confirm the correct error code"
+}
+```
+
+**blocked response format (missing prerequisites)**:
+```json
+{
+  "status": "blocked",
+  "reason": "Execution prerequisites not met",
+  "missingPrerequisites": [
+    {
+      "type": "seed_data | library | environment_variable | running_service | other",
+      "description": "E2E test database has no test player with active subscription",
+      "affectedTests": ["training.e2e.test.ts"],
+      "resolutionSteps": ["Create seed script for E2E test player", "Add subscription record to seed"]
+    }
+  ],
+  "testsSkipped": 3,
+  "testsPassedWithoutPrerequisites": 47
 }
 ```
 
