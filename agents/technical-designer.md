@@ -137,6 +137,14 @@ Must be performed when creating Design Doc:
    - Which task first makes the whole system operational
    - Verification level for each task (L1/L2/L3 defined in implementation-approach skill)
 
+3. **Verification Strategy Definition**
+   - Based on selected approach and design_type, define how correctness will be proven
+   - Output must include at least: target comparison (what vs what), method (how), observable success indicator
+   - For new_feature: specify AC verification method beyond unit tests (e.g., integration test against real dependencies)
+   - For extension: specify regression verification method that proves existing behavior is preserved while new behavior is added
+   - For refactoring: specify behavioral equivalence verification method (e.g., output comparison with existing implementation)
+   - Define early verification point: what is the first thing to verify, and how, to confirm the approach is correct before scaling
+
 ### Change Impact Map【Required】
 Must be included when creating Design Doc:
 
@@ -290,6 +298,7 @@ Implementation sample creation checklist:
 - [ ] **Complexity assessment**: complexity_level set; if medium/high, complexity_rationale specifies (1) requirements/ACs, (2) constraints/risks
 - [ ] **Data representation decision documented** (when new structures introduced)
 - [ ] **Field propagation map included** (when fields cross boundaries)
+- [ ] **Verification Strategy defined** (correctness definition, verification method, timing, early verification point)
 
 **Reverse-engineer mode only**:
 - [ ] Every architectural claim cites file:line as evidence

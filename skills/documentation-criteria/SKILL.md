@@ -142,6 +142,9 @@ description: Documentation creation criteria including PRD, ADR, Design Doc, and
 - **Data representation decision** (when introducing new structures)
 - **Applicable standards** (explicit/implicit classification)
 - **Prerequisite ADRs** (including common ADRs)
+- **Verification Strategy** (required)
+  - Correctness proof method (what "correct" means for this change, how it's verified, when)
+  - Early verification point (first target to prove the approach works, success criteria, failure response)
 
 **Required Structural Elements**:
 ```yaml
@@ -171,18 +174,32 @@ Interface Change Matrix:
 - Task breakdown and dependencies (maximum 2 levels)
 - Schedule and duration estimates
 - **Include test skeleton file paths from acceptance-test-generator** (integration and E2E)
-- **Phase 4 Quality Assurance Phase (required)**
+- **Verification Strategy summary** (extracted from Design Doc)
+- **Final Quality Assurance Phase (required)**
 - Progress records (checkbox format)
 
 **Excludes**:
 - Technical rationale (→ADR)
 - Design details (→Design Doc)
 
-**Phase Division Criteria**:
+**Phase Division Criteria** (adapt to implementation approach from Design Doc):
+
+**When Vertical Slice selected**:
+- Each phase = one value unit (feature, component, or migration target)
+- Each phase includes its own implementation + verification per Verification Strategy
+- Final Phase: Quality Assurance (cross-cutting verification, all tests passing)
+
+**When Horizontal Slice selected**:
 1. **Phase 1: Foundation Implementation** - Contract definitions, interfaces/signatures, test preparation
 2. **Phase 2: Core Feature Implementation** - Business logic, unit tests
 3. **Phase 3: Integration Implementation** - External connections, presentation layer
-4. **Phase 4: Quality Assurance (Required)** - Acceptance criteria achievement, all tests passing, quality checks
+4. **Final Phase: Quality Assurance (Required)** - Acceptance criteria achievement, all tests passing, quality checks
+
+**When Hybrid selected**:
+- Combine vertical and horizontal as defined in Design Doc implementation approach
+- Final Phase: Quality Assurance (Required)
+
+**All approaches**: Final phase is always Quality Assurance. Each phase's verification method follows Verification Strategy from Design Doc.
 
 **Three Elements of Task Completion Definition**:
 1. **Implementation Complete**: Code is functional

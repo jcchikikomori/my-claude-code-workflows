@@ -76,6 +76,7 @@ For DesignDoc, additionally verify:
 - [ ] Code inspection evidence recorded (files and functions listed)
 - [ ] Applicable standards listed with explicit/implicit classification
 - [ ] Field propagation map present (when fields cross boundaries)
+- [ ] Verification Strategy section present with: correctness definition, verification method, verification timing, early verification point
 
 #### Gate 1: Quality Assessment (only after Gate 0 passes)
 
@@ -93,6 +94,7 @@ For DesignDoc, additionally verify:
 - **As-is implementation document review**: When code verification results are provided and the document describes existing implementation (not future requirements), verify that code-observable behaviors are stated as facts; speculative language about deterministic behavior → `important` issue
 - **Data design completeness check**: When document contains data-storage keywords (database, persistence, storage, migration) or data-access keywords (repository, query, ORM, SQL) or data-schema keywords (table, schema, column) but lacks data design content (no schema references, no "Test Boundaries" section with data layer strategy, no data model documentation) → `important` issue (category: `completeness`). Note: generic terms like "model", "field", "record", "entity" alone are insufficient to trigger this check — require co-occurrence with at least one data-storage or data-access keyword
 - **Code-verifier integration**: When `code_verification` input is provided, each item in `undocumentedDataOperations` absent from the document → `important` issue (category: `completeness`). Each discrepancy from code-verifier with severity `critical` or `major` → incorporate as pre-verified evidence in the corresponding review check
+- **Verification Strategy quality check**: When Verification Strategy section exists, verify: (1) Correctness definition is specific and measurable — "tests pass" without specifying which tests or what they verify → `important` issue (category: `completeness`). (2) Verification method is sufficient for the change's risk and dependency type — method that cannot detect the primary risk category (e.g., schema correctness, behavioral equivalence, integration compatibility) → `important` issue (category: `consistency`). (3) Early verification point identifies a concrete first target — "TBD" or "final phase" → `important` issue (category: `completeness`). (4) When vertical slice is selected, verification timing deferred entirely to final phase → `important` issue (category: `consistency`)
 
 **Perspective-specific Mode**:
 - Implement review based on specified mode and focus
@@ -248,6 +250,8 @@ Include in output when `prior_context_count > 0`:
 - [ ] Field propagation map present when fields cross component boundaries
 - [ ] Data-related keywords present → data design content exists (schema references, Test Boundaries, or data model documentation; or explicitly marked N/A)
 - [ ] Code-verifier results (if provided) reconciled with document content
+- [ ] Verification Strategy present with concrete correctness definition and early verification point
+- [ ] Verification Strategy aligns with design_type and implementation approach
 
 ## Review Criteria (for Comprehensive Mode)
 

@@ -18,6 +18,7 @@ Read the Design Doc(s), UI Spec, PRD, and ADR (if provided). Extract:
 - Acceptance criteria and implementation approach
 - Technical dependencies and implementation order
 - Integration points and their contracts
+- **Verification Strategy**: Correctness Proof Method (correctness definition, verification method, verification timing) and Early Verification Point (first verification target, success criteria, failure response)
 
 ### 2. Process Test Design Information (when provided)
 Read test skeleton files and extract meta information (see Test Design Information Processing section).
@@ -26,11 +27,15 @@ Read test skeleton files and extract meta information (see Test Design Informati
 Choose Strategy A (TDD) if test skeletons are provided, Strategy B (implementation-first) otherwise. See Implementation Strategy Selection section.
 
 ### 4. Compose Phases
-Structure phases based on technical dependencies from Design Doc:
-- Place tasks with lowest dependencies in earlier phases
+
+**Common rules (all approaches)**:
+- **Include Verification Strategy summary in work plan header** for task-decomposer reference
+- Include verification tasks in the phase corresponding to Verification Strategy's verification timing
 - When test skeletons are provided, place integration test implementation in corresponding phases and E2E test execution in the final phase
 - When test skeletons are not provided, include test implementation tasks based on Design Doc acceptance criteria
-- Include quality assurance in final phase
+- Final phase is always Quality Assurance
+
+**Phase structure**: Select based on implementation approach from Design Doc. See Phase Division Criteria in documentation-criteria skill for detailed definitions. Use plan-template Option A (Vertical) or Option B (Horizontal) accordingly.
 
 ### 5. Define Tasks with Completion Criteria
 For each task, derive completion criteria from Design Doc acceptance criteria. Apply the 3-element completion definition (Implementation Complete, Quality Complete, Integration Complete).
@@ -190,7 +195,9 @@ When creating work plans, **Phase Structure Diagrams** and **Task Dependency Dia
 ## Quality Checklist
 
 - [ ] Design Doc(s) consistency verification
-- [ ] Phase composition based on technical dependencies
+- [ ] Verification Strategy extracted from Design Doc and included in plan header
+- [ ] Phase structure matches implementation approach (vertical → value unit phases, horizontal → layer phases)
+- [ ] Early verification point placed in Phase 1 (when Verification Strategy specifies one)
 - [ ] All requirements converted to tasks
 - [ ] Quality assurance exists in final phase
 - [ ] Test skeleton file paths listed in corresponding phases (when provided)
