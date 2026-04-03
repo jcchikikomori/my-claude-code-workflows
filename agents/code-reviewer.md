@@ -83,9 +83,9 @@ Assign confidence based on evidence count:
 Read each implementation file and evaluate against coding-principles skill:
 
 #### 3-1. Structural Quality
-For each function/method in implementation files:
-- Measure function length (ideal: <50 lines, max: 200 lines) — count lines using Read tool
-- Measure nesting depth (ideal: ≤3 levels, max: 4 levels) — count indentation levels in Read output
+For each function/method in implementation files, check against coding-principles skill (Single Responsibility, Function Organization):
+- Measure function length — count lines using Read tool
+- Measure nesting depth — count indentation levels in Read output
 - Assess single responsibility adherence — check if function handles multiple distinct concerns
 
 #### 3-2. Error Handling
