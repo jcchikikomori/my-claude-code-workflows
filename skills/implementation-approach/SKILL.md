@@ -88,12 +88,12 @@ Select optimal solution from basic implementation approaches (creative combinati
 
 #### Vertical Slice (Feature-driven)
 **Characteristics**: Vertical implementation across all layers by feature unit
-**Application Conditions**: Low inter-feature dependencies, output in user-usable form, changes needed across all architecture layers
+**Application Conditions**: Features share fewer than 2 data models, each feature is independently deliverable, changes touch 3+ architecture layers
 **Verification Method**: End-user value delivery at each feature completion
 
 #### Horizontal Slice (Foundation-driven)
 **Characteristics**: Phased construction by architecture layer
-**Application Conditions**: Foundation system stability important, multiple features depend on common foundation, layer-by-layer verification effective
+**Application Conditions**: 3+ features depend on a common foundation layer, foundation changes require stability verification before consumers can proceed
 **Verification Method**: Integrated operation verification when all foundation layers complete
 
 #### Hybrid (Creative Combination)
@@ -103,7 +103,12 @@ Select optimal solution from basic implementation approaches (creative combinati
 
 ### Phase 6: Decision Rationale Documentation
 
-**Design Doc Documentation**: Clearly specify implementation strategy selection reasons and rationale.
+**Design Doc Documentation**: Record in the Design Doc's implementation approach section:
+1. Selected strategy name and characteristics
+2. Alternatives considered and reason for rejection
+3. Risk mitigation plan (from Phase 3)
+4. Constraint compliance summary (from Phase 4)
+5. Verification level (L1/L2/L3) and integration point definition
 
 ## Verification Level Definitions
 
@@ -123,19 +128,15 @@ Define integration points according to selected strategy:
 - **Foundation-driven**: When all architecture layers are ready and E2E tests pass
 - **Hybrid**: When individual goals defined for each phase are achieved
 
-## Anti-patterns
+## Quality Checks
 
-- **Pattern Fixation**: Selecting only from listed strategies without considering unique combinations
-- **Insufficient Analysis**: Skipping Phase 1 analysis framework before strategy selection
-- **Risk Neglect**: Starting implementation without Phase 3 risk analysis matrix
-- **Constraint Ignorance**: Deciding strategy without checking Phase 4 constraint checklist
-- **Rationale Omission**: Selecting strategy without using Phase 6 documentation template
+1. Verify at least one strategy combination beyond listed patterns was considered
+2. Confirm Phase 1 analysis framework is complete before selecting strategy
+3. Confirm Phase 3 risk analysis matrix is populated before implementation starts
+4. Confirm Phase 4 constraint checklist is reviewed before strategy decision
+5. Confirm Phase 6 documentation template is filled with selection rationale
 
 ## Guidelines for Meta-cognitive Execution
 
-1. **Leverage Known Patterns**: Use as starting point, explore creative combinations
-2. **Active WebSearch Use**: Research implementation examples from similar tech stacks
-3. **Apply 5 Whys**: Pursue root causes to grasp essence
-4. **Multi-perspective Evaluation**: Comprehensively evaluate from each Phase 1-4 perspective
-5. **Creative Thinking**: Consider sequential application of multiple strategies and designs leveraging project-specific constraints
-6. **Clarify Decision Rationale**: Make strategy selection rationale explicit in design documents
+1. **Active WebSearch Use**: Research implementation examples from similar tech stacks
+2. **Apply 5 Whys**: Pursue root causes to grasp essence

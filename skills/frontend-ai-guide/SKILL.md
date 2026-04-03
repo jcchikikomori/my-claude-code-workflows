@@ -33,7 +33,7 @@ Immediately stop and reconsider design when detecting the following patterns:
 Design philosophy that prioritizes improving primary code reliability over fallback implementations.
 
 ### Criteria for Fallback Implementation
-- **Default Prohibition**: Do not implement unconditional fallbacks on errors
+- **Fallback rule**: Implement fallbacks only when explicitly defined in Design Doc
 - **Exception Approval**: Implement only when explicitly defined in Design Doc
 - **Layer Responsibilities**:
   - Component Layer: Use Error Boundary for error handling
@@ -71,11 +71,11 @@ How to handle duplicate code based on Martin Fowler's "Refactoring":
 
 ### Implementation Example
 ```typescript
-// ❌ Immediate commonalization on 1st duplication
+// Immediate commonalization on 1st duplication
 function UserEmailInput() { /* ... */ }
 function ContactEmailInput() { /* ... */ }
 
-// ✅ Commonalize on 3rd occurrence
+// Commonalize on 3rd occurrence
 function EmailInput({ context }: { context: 'user' | 'contact' | 'admin' }) { /* ... */ }
 ```
 
@@ -195,8 +195,8 @@ Use the appropriate run command based on the `packageManager` field in package.j
 - Prioritize current simplicity over future extensibility
 
 ### Performance vs Readability
-- Prioritize readability unless clear bottleneck exists
-- Measure before optimizing (don't guess, use React DevTools Profiler)
+- Prioritize readability unless React DevTools Profiler identifies a measurable bottleneck (e.g., render time exceeding 16ms, unnecessary re-renders)
+- Measure before optimizing with React DevTools Profiler
 - Document reason with comments when optimizing
 
 ### Granularity of Component/Type Definitions
@@ -232,7 +232,7 @@ Structured impact report (mandatory):
 ### Processing Flow: Props → Render → Events → Callbacks
 ```
 
-**Important**: Do not stop at search; execute all 3 stages
+**Important**: Execute all 3 stages to completion
 
 ### Unused Code Deletion Rule
 

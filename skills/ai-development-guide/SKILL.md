@@ -28,12 +28,12 @@ Immediately stop and reconsider design when detecting the following patterns:
 ## Fail-Fast Fallback Design Principles
 
 ### Core Principle
-Make errors explicit with full context. Prioritize primary code reliability over fallback implementations. Never hide errors with silent fallbacks—excessive fallback mechanisms mask errors and make debugging difficult.
+Make all errors visible and traceable with full context. Prioritize primary code reliability over fallback implementations. Excessive fallback mechanisms mask errors and make debugging difficult.
 
 ### Implementation Guidelines
 
 #### Default Approach
-- **Prohibit unconditional fallbacks**: Do not automatically return default values on errors
+- **Propagate all errors explicitly** unless a Design Doc specifies a fallback
 - **Make failures explicit**: Errors should be visible and traceable
 - **Preserve error context**: Include original error information when re-throwing
 
@@ -70,11 +70,11 @@ Make errors explicit with full context. Prioritize primary code reliability over
 ### Implementation Pattern
 
 ```
-❌ AVOID: Silent fallback that hides errors
+AVOID: Silent fallback that hides errors
     <handle error>:
         return DEFAULT_VALUE  // Error hidden, debugging impossible
 
-✅ PREFERRED: Explicit failure with context
+PREFERRED: Explicit failure with context
     <handle error>:
         log_error('Operation failed', context, error)
         <propagate error>  // Re-throw exception, return Error, return error tuple
@@ -109,11 +109,11 @@ How to handle duplicate code based on Martin Fowler's "Refactoring":
 ### Implementation Example
 
 ```
-// ❌ Immediate commonalization on 1st duplication
+// Immediate commonalization on 1st duplication
 validateUserEmail(email) { /* ... */ }
 validateContactEmail(email) { /* ... */ }
 
-// ✅ Commonalize on 3rd occurrence with context parameter
+// Commonalize on 3rd occurrence with context parameter
 validateEmail(email, context) { /* ... */ }
 // context: 'user' | 'contact' | 'admin'
 ```
@@ -127,29 +127,24 @@ validateEmail(email, context) { /* ... */ }
 **Cause**: Surface-level fixes without understanding root cause
 **Avoidance**: Identify root cause with 5 Whys before fixing
 
-### Pattern 2: Circumventing Correctness Guarantees
-**Symptom**: Bypassing safety mechanisms (type systems, validation, contracts)
-**Cause**: Impulse to avoid correctness errors
-**Avoidance**: Use language-appropriate safety mechanisms (static checking, runtime validation, contracts, assertions)
-
-### Pattern 3: Implementation Without Sufficient Testing
+### Pattern 2: Implementation Without Sufficient Testing
 **Symptom**: Many bugs after implementation
 **Cause**: Ignoring Red-Green-Refactor process
 **Avoidance**: Always start with failing tests
 
-### Pattern 4: Ignoring Technical Uncertainty
+### Pattern 3: Ignoring Technical Uncertainty
 **Symptom**: Frequent unexpected errors when introducing new technology
 **Cause**: Assuming "it should work according to official documentation" without prior investigation
 **Avoidance**:
 - Record certainty evaluation at the beginning of task files
   ```
-  Certainty: low (Reason: no examples of MCP connection found)
+  Certainty: low (Reason: no working examples found for this integration)
   Exploratory implementation: true
-  Fallback: use conventional API
+  Fallback: use established alternative approach
   ```
 - For low certainty cases, create minimal verification code first
 
-### Pattern 5: Insufficient Existing Code Investigation
+### Pattern 4: Insufficient Existing Code Investigation
 **Symptom**: Duplicate implementations, architecture inconsistency, integration failures
 **Cause**: Insufficient understanding of existing code before implementation
 **Avoidance Methods**:
@@ -226,7 +221,7 @@ All checks must pass before proceeding:
 - Zero static analysis errors
 - Build succeeds
 - All tests pass
-- Coverage meets threshold
+- Coverage meets project-defined minimum (default: 80%)
 
 ### Quality Check Pattern (Language-Agnostic)
 ```
@@ -250,13 +245,13 @@ Auto-fix capabilities (when available):
 - Prioritize current simplicity over future extensibility
 
 ### Performance vs Readability
-- Prioritize readability unless clear bottleneck exists
-- Measure before optimizing (don't guess, measure)
+- Prioritize readability unless profiling identifies a measurable bottleneck (e.g., response time exceeding SLA, memory exceeding allocation)
+- Measure before optimizing
 - Document reason with comments when optimizing
 
 ### Granularity of Contracts and Interfaces
 - Overly detailed contracts reduce maintainability
-- Design interfaces that appropriately express domain
+- Design interfaces where each method maps to a single domain operation and parameter types use domain vocabulary
 - Use abstraction mechanisms to reduce duplication
 
 ## Implementation Completeness Assurance

@@ -24,11 +24,11 @@ description: Integration and E2E test design principles, ROI calculation, test s
 - User-visible functionality completeness
 - Error handling behavior (what user sees/experiences)
 
-### Exclude (Low ROI in CI/CD)
-- External service real connections → Use contract/interface verification
-- Performance metrics → Non-deterministic, defer to load testing
-- Implementation details → Focus on observable behavior
-- UI layout specifics → Focus on information availability
+### Redirect to Other Test Types
+- External service connections → Verify via contract/interface tests
+- Performance metrics → Verify via dedicated load testing
+- Implementation details → Verify observable behavior instead
+- UI layout specifics → Verify information availability instead
 
 **Principle**: Test = User-observable behavior verifiable in isolated CI environment
 
@@ -116,8 +116,3 @@ The test runner or framework in the project determines the appropriate file exte
 - No test interdependencies
 - Deterministic execution
 
-### Prohibited
-- Testing implementation details
-- Multiple behaviors per test
-- Shared mutable state
-- Time-dependent assertions without mocking

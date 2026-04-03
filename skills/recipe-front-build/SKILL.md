@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator." (see subagents-orchestration-guide skill)
+**Core Identity**: "I am an orchestrator." (see subagents-orchestration-guide skill)
 
 **Execution Method**:
 - Task decomposition → performed by task-decomposer
@@ -33,7 +33,7 @@ Work plan: $ARGUMENTS
 ! ls -la docs/plans/*.md | grep -v template | tail -5
 
 # Check task files
-! ls docs/plans/tasks/*.md 2>/dev/null || echo "⚠️ No task files found"
+! ls docs/plans/tasks/*.md 2>/dev/null || echo "No task files found"
 ```
 
 ### Task Generation Decision Flow
@@ -71,7 +71,7 @@ Invoke task-decomposer using Agent tool:
 ! ls -la docs/plans/tasks/*.md | head -10
 ```
 
-✅ **Flow**: Task generation → Autonomous execution (in this order)
+**Flow**: Task generation → Autonomous execution (in this order)
 
 ## Pre-execution Checklist
 
@@ -113,7 +113,7 @@ For EACH task, YOU MUST:
    - Invocation example: `subagent_type: "dev-workflows-frontend:quality-fixer-frontend"`, `description: "Quality check"`, `prompt: "Execute all frontend quality checks and fixes"`
 5. **EXECUTE commit**: After `approved: true` confirmation, execute git commit IMMEDIATELY. Use `changeSummary` for commit message.
 
-**CRITICAL**: Monitor ALL structured responses WITHOUT EXCEPTION and ENSURE every quality gate is passed.
+**CRITICAL**: Parse every sub-agent response for status fields. Execute the matching branch in the 4-step cycle. Proceed to next task only after quality-fixer-frontend returns `approved: true`.
 
 ## Sub-agent Invocation Constraints
 
@@ -125,9 +125,7 @@ This agent operates within build skill scope. Use orchestrator-provided rules on
 
 Autonomous sub-agents require scope constraints for stable execution. ALWAYS append this constraint to every sub-agent prompt.
 
-! ls -la docs/plans/*.md | head -10
-
-VERIFY approval status before proceeding. Once confirmed, INITIATE autonomous execution mode. STOP IMMEDIATELY upon detecting ANY requirement changes.
+Verify task files exist per Pre-execution Checklist, then enter autonomous execution mode. When requirement changes are detected during execution, escalate to the user with the change summary before continuing.
 
 ## Security Review (After All Tasks Complete)
 

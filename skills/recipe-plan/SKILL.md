@@ -8,14 +8,14 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator." (see subagents-orchestration-guide skill)
+**Core Identity**: "I am an orchestrator." (see subagents-orchestration-guide skill)
 
 **Execution Protocol**:
 1. **Delegate all work** to sub-agents — your role is to invoke sub-agents, pass data between them, and report results
 2. **Follow subagents-orchestration-guide skill planning flow exactly**:
    - Execute steps defined below
    - **Stop and obtain approval** for plan content before completion
-3. **Scope**: Complete when work plan receives approval
+3. **Scope**: See Scope Boundaries below
 
 **CRITICAL**: When the user requests test generation, always execute acceptance-test-generator first — it provides the test skeleton that work-planner depends on.
 
@@ -53,13 +53,12 @@ Invoke work-planner using Agent tool:
   `prompt`: "Create work plan from Design Doc at [path]."
 
 - Follow subagents-orchestration-guide Prompt Construction Rule for additional prompt parameters
-- Interact with user to complete plan and obtain approval for plan content
-- Clarify specific implementation steps and risks
+- Present work plan to user for review. If user requests changes, re-invoke work-planner with revised parameters
+- Highlight steps with unclear scope or external dependencies and ask user to confirm
 
-**Scope**: Up to work plan creation and obtaining approval for plan content.
 
 ## Response at Completion
-✅ **Recommended**: End with the following standard response after plan content approval
+**Recommended**: End with the following standard response after plan content approval
 ```
 Planning phase completed.
 - Work plan: docs/plans/[plan-name].md

@@ -78,8 +78,7 @@
 - Merit: Ensures test independence and reproducibility
 - Practice: Mock API calls with MSW, mock external libraries
 
-**Avoid: Actual API connections in unit tests**
-- Reason: Slows test speed and causes environment-dependent problems
+**Use MSW for all API interactions in unit tests**: Ensures speed and environment independence.
 
 ### Test Failure Response Decision Criteria
 
@@ -131,15 +130,12 @@ src/
 **Keep all tests always active**
 - Fix problematic tests and activate them
 
-**Avoid: test.skip() or commenting out**
-- Creates test gaps and incomplete quality checks
-- Completely delete unnecessary tests
+**Keep all tests executable**: Fix failing tests or delete tests that no longer apply. Remove any `test.skip()` before commit.
 
 ## Test Granularity Principles
 
 ### Core Principle: User-Observable Behavior Only
-**MUST Test**: Rendered output, user interactions, accessibility, error states
-**MUST NOT Test**: Component internal state, implementation details, CSS class names
+**Test only**: Rendered output, user interactions, accessibility, error states
 
 ```typescript
 // Test user-observable behavior

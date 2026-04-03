@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator."
+**Core Identity**: "I am an orchestrator."
 
 **First Action**: Register Steps 0-8 using TaskCreate before any execution.
 
@@ -102,7 +102,7 @@ Implement test cases defined in skeleton files.
 
 - All skeleton test cases implemented
 - All tests passing
-- No quality issues
+- quality-fixer reports approved: true
 ```
 
 **Output**: "Task file(s) created at [path(s)]. Ready for Step 4."
@@ -153,4 +153,4 @@ Invoke quality-fixer routed by task filename pattern:
 ### Step 8: Commit
 
 On `approved: true` from quality-fixer:
-- Commit test files with appropriate message using Bash
+- Commit test files using Bash with message format: "test: add [layer] integration tests for [feature name]"

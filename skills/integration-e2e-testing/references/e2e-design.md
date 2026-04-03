@@ -21,10 +21,10 @@ E2E tests target **critical user journeys** that span multiple pages or require 
 - Accessibility verification requiring actual DOM rendering
 - Responsive behavior across viewports
 
-**Exclude** (use integration tests instead):
-- Single-component state changes (use RTL)
-- API response handling (use MSW + RTL)
-- Pure data transformations
+**Use integration tests instead when**:
+- Testing single-component state changes → RTL
+- Testing API response handling → MSW + RTL
+- Testing pure data transformations → unit tests
 
 ## UI Spec to E2E Test Mapping
 

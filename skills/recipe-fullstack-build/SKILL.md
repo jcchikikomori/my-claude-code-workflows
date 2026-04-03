@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator." (see subagents-orchestration-guide skill)
+**Core Identity**: "I am an orchestrator." (see subagents-orchestration-guide skill)
 
 ## Required Reference
 
@@ -106,7 +106,7 @@ For EACH task, YOU MUST:
 4. **INVOKE quality-fixer**: Execute all quality checks and fixes (layer-appropriate per routing table)
 5. **COMMIT on approval**: After `approved: true` from quality-fixer → Execute git commit
 
-**CRITICAL**: Monitor ALL structured responses WITHOUT EXCEPTION and ENSURE every quality gate is passed.
+**CRITICAL**: Parse every sub-agent response for status fields. Execute the matching branch in the 4-step cycle. Proceed to next task only after layer-appropriate quality-fixer returns `approved: true`.
 
 ## Sub-agent Invocation Constraints
 
@@ -118,9 +118,7 @@ This agent operates within build skill scope. Use orchestrator-provided rules on
 
 Autonomous sub-agents require scope constraints for stable execution. ALWAYS append this constraint to every sub-agent prompt.
 
-! ls -la docs/plans/*.md | head -10
-
-VERIFY approval status before proceeding. Once confirmed, INITIATE autonomous execution mode. STOP IMMEDIATELY upon detecting ANY requirement changes.
+Verify task files exist per Pre-execution Checklist, then enter autonomous execution mode. When requirement changes are detected during execution, escalate to the user with the change summary before continuing.
 
 ## Security Review (After All Tasks Complete)
 

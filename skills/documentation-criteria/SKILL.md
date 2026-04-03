@@ -59,18 +59,14 @@ description: Documentation creation criteria including PRD, ADR, Design Doc, and
 
 **Includes**:
 - Business requirements and user value
-- Success metrics and KPIs (measurable format)
+- Success metrics and KPIs (each metric specifies a numeric target and measurement method)
 - User stories and use cases
 - MoSCoW prioritization (Must/Should/Could/Won't)
 - MVP and Future phase separation
 - User journey diagram (required)
 - Scope boundary diagram (required)
 
-**Excludes**:
-- Technical implementation details (→Design Doc)
-- Technical selection rationale (→ADR)
-- **Implementation phases** (→Work Plan)
-- **Task breakdown** (→Work Plan)
+**Scope**: Business requirements, user value, success metrics, user stories, and prioritization only. Implementation details belong in Design Doc, technical selection rationale in ADR, phases and task breakdown in Work Plan.
 
 ### ADR (Architecture Decision Record)
 
@@ -83,11 +79,7 @@ description: Documentation creation criteria including PRD, ADR, Design Doc, and
 - Architecture impact
 - Principled implementation guidelines (e.g., "Use dependency injection")
 
-**Excludes**:
-- Implementation schedule, duration (→Work Plan)
-- Detailed implementation procedures (→Design Doc)
-- Specific code examples (→Design Doc)
-- Resource assignments (→Work Plan)
+**Scope**: Decision, rationale, option comparison, architecture impact, and principled guidelines only. Implementation procedures and code examples belong in Design Doc, schedule and resource assignments in Work Plan.
 
 ### UI Specification
 
@@ -103,11 +95,7 @@ description: Documentation creation criteria including PRD, ADR, Design Doc, and
 - Visual acceptance criteria (golden states, layout constraints)
 - Accessibility requirements (keyboard, screen reader, contrast)
 
-**Excludes**:
-- Technical implementation details (-> Design Doc)
-- API contracts and data layer design (-> Design Doc)
-- Test implementation (-> acceptance-test-generator skeletons)
-- Implementation schedule (-> Work Plan)
+**Scope**: Screen structure, transitions, component decomposition, interaction design, and visual acceptance criteria only. Technical implementation and API contracts belong in Design Doc, test implementation in acceptance-test-generator skeletons, schedule in Work Plan.
 
 **Required Structural Elements**:
 - At least one component with state x display matrix and interaction table
@@ -132,7 +120,7 @@ description: Documentation creation criteria including PRD, ADR, Design Doc, and
 - **Technical dependencies and implementation constraints** (required implementation order)
 - Interface and contract definitions
 - Data flow and component design
-- **Acceptance criteria (measurable format)**
+- **Acceptance criteria (each criterion specifies a verifiable condition with pass/fail threshold)**
 - Change impact map (clearly specify direct impact/indirect impact/no ripple effect)
 - Complete enumeration of integration points
 - Data contract clarification
@@ -161,10 +149,7 @@ Interface Change Matrix:
   Compatibility Method: [Approach]
 ```
 
-**Excludes**:
-- Why that technology was chosen (→Reference ADR)
-- When to implement, duration (→Work Plan)
-- Who will implement (→Work Plan)
+**Scope**: Technical implementation methods, interfaces, data flow, acceptance criteria, and verification strategy only. Technology selection rationale belongs in ADR, schedule and assignments in Work Plan.
 
 ### Work Plan
 
@@ -178,28 +163,23 @@ Interface Change Matrix:
 - **Final Quality Assurance Phase (required)**
 - Progress records (checkbox format)
 
-**Excludes**:
-- Technical rationale (→ADR)
-- Design details (→Design Doc)
+**Scope**: Task breakdown, dependencies, schedule, verification strategy summary, and progress tracking only. Technical rationale belongs in ADR, design details in Design Doc.
 
 **Phase Division Criteria** (adapt to implementation approach from Design Doc):
 
 **When Vertical Slice selected**:
 - Each phase = one value unit (feature, component, or migration target)
 - Each phase includes its own implementation + verification per Verification Strategy
-- Final Phase: Quality Assurance (cross-cutting verification, all tests passing)
 
 **When Horizontal Slice selected**:
 1. **Phase 1: Foundation Implementation** - Contract definitions, interfaces/signatures, test preparation
 2. **Phase 2: Core Feature Implementation** - Business logic, unit tests
 3. **Phase 3: Integration Implementation** - External connections, presentation layer
-4. **Final Phase: Quality Assurance (Required)** - Acceptance criteria achievement, all tests passing, quality checks
 
 **When Hybrid selected**:
 - Combine vertical and horizontal as defined in Design Doc implementation approach
-- Final Phase: Quality Assurance (Required)
 
-**All approaches**: Final phase is always Quality Assurance. Each phase's verification method follows Verification Strategy from Design Doc.
+**All approaches**: Final phase is always Quality Assurance (acceptance criteria achievement, all tests passing, quality checks). Each phase's verification method follows Verification Strategy from Design Doc.
 
 **Three Elements of Task Completion Definition**:
 1. **Implementation Complete**: Code is functional

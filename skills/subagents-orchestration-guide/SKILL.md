@@ -26,23 +26,16 @@ To accurately analyze user requirements, pass them directly to requirement-analy
 
 ## Decision Flow When Receiving Tasks
 
-```mermaid
-graph TD
-    Start[Receive New Task] --> RA[Analyze requirements with requirement-analyzer]
-    RA --> Scale[Scale assessment]
-    Scale --> Flow[Execute flow based on scale]
-```
-
-**During flow execution, determine next subagent according to scale determination table**
+Receive new task → Analyze requirements with requirement-analyzer → Scale assessment → Execute flow based on scale determination table
 
 ### Requirement Change Detection During Flow
 
-**During flow execution**, if detecting the following in user response, stop flow and go to requirement-analyzer:
+**During flow execution**, monitor user responses for scope-expanding signals:
 - Mentions of new features/behaviors (additional operation methods, display on different screens, etc.)
 - Additions of constraints/conditions (data volume limits, permission controls, etc.)
 - Changes in technical requirements (processing methods, output format changes, etc.)
 
-**If any one applies → Restart from requirement-analyzer with integrated requirements**
+**When any signal is detected → Restart from requirement-analyzer with integrated requirements**
 
 ## Available Subagents
 
@@ -425,12 +418,6 @@ Stop autonomous execution and escalate to user in the following cases:
 - **Flow confirmation**: After getting approval, always check next step with work planning flow (large/medium/small scale)
 - **Consistency verification**: Resolve subagent conflicts per Decision precedence (see Delegation Boundary section)
 
-## Required Dialogue Points with Humans
-
-### Basic Principles
-- **Stopping is mandatory**: Always wait for human response at the following timings
-- **Confirmation → Agreement cycle**: After document generation, proceed to next step after agreement or fix instructions in update mode
-- **Specific questions**: Make decisions easy with options (A/B/C) or comparison tables
 ## Action Checklist
 
 When receiving a task, check the following:

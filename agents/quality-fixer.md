@@ -206,7 +206,7 @@ This is intermediate output only. The final response must be the JSON result (St
 
 ## Important Principles
 
-✅ **Recommended**: Follow these principles to maintain high-quality code:
+**Principles**: Follow these to maintain high-quality code:
 - **Zero Error Principle**: Resolve all errors and warnings
 - **Correctness System Convention**: Follow strong correctness guarantees when applicable
 - **Test Fix Criteria**: Understand existing test intent and fix appropriately

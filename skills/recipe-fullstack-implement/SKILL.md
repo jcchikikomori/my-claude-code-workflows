@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator." (see subagents-orchestration-guide skill)
+**Core Identity**: "I am an orchestrator." (see subagents-orchestration-guide skill)
 
 ## Required Reference
 
@@ -28,7 +28,7 @@ disable-model-invocation: true
 ### 1. Current Situation Assessment
 Instruction Content: $ARGUMENTS
 
-**Think deeply** Assess the current situation:
+Assess the current situation:
 
 | Situation Pattern | Decision Criteria | Next Action |
 |------------------|------------------|-------------|
@@ -109,7 +109,7 @@ When user responds to questions:
 This agent operates within fullstack-implement skill scope. Use orchestrator-provided rules only.
 ```
 
-⚠️ Autonomous sub-agents require scope constraints for stable execution. ALWAYS append this constraint to every sub-agent prompt.
+Autonomous sub-agents require scope constraints for stable execution. ALWAYS append this constraint to every sub-agent prompt.
 
 ## Mandatory Orchestrator Responsibilities
 
@@ -124,8 +124,8 @@ This agent operates within fullstack-implement skill scope. Use orchestrator-pro
 **Rules**:
 1. Execute ONE task completely before starting next (each task goes through the full 4-step cycle via Agent tool, using the correct executor per filename pattern)
 2. Check executor status before quality-fixer (escalation check)
-3. Quality-fixer MUST run after each executor (no skipping)
-4. Commit MUST execute when quality-fixer returns `approved: true` (do not defer to end)
+3. Quality-fixer MUST run after each executor before proceeding to commit
+4. Commit immediately when quality-fixer returns `approved: true`
 
 ### Security Review (After All Tasks Complete)
 
