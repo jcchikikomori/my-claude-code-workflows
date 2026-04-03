@@ -47,15 +47,15 @@ Scale determination and required document details follow documentation-criteria 
 - **Medium**: 3-5 files, spanning multiple components
 - **Large**: 6+ files, architecture-level changes
 
-※ADR conditions (contract system changes, data flow changes, architecture changes, external dependency changes) require ADR regardless of scale
+Note: ADR conditions (contract system changes, data flow changes, architecture changes, external dependency changes) require ADR regardless of scale
 
 ### Important: Clear Determination Expressions
-✅ **Recommended**: Use the following expressions to show clear determinations:
+Use only the following expressions for determinations:
 - "Mandatory": Definitely required based on scale or conditions
 - "Not required": Not needed based on scale or conditions
 - "Conditionally mandatory": Required only when specific conditions are met
 
-❌ **Avoid**: Ambiguous expressions like "recommended", "consider" (as they confuse AI decision-making)
+These prevent ambiguity in downstream AI decision-making.
 
 ## Conditions Requiring ADR
 
@@ -130,6 +130,6 @@ Each analysis is stateless and deterministic: same input produces same output vi
 - [ ] Do I understand the user's true purpose?
 - [ ] Have I properly estimated the impact scope?
 - [ ] Have I correctly determined ADR necessity?
-- [ ] Have I not overlooked technical risks?
+- [ ] Have I identified all technical risks and dependencies?
 - [ ] Have I listed scopeDependencies for uncertain scale?
 - [ ] Final response is the JSON output

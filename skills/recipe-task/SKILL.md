@@ -45,18 +45,14 @@ Break down the task based on rule-advisor's guidance:
 - Reflect `taskAnalysis.essence` in task descriptions
 - Apply `metaCognitiveGuidance.firstStep` to first task
 - Restructure tasks considering `warningPatterns`
-- Set appropriate priorities
+- Set priorities based on dependency order and warningPatterns severity
 
 **Step 4: Execute Implementation**
 
 Proceed with task execution following:
+- Start with `metaCognitiveGuidance.firstStep` action from rule-advisor
+- Update task structure with TaskUpdate to reflect rule-advisor insights
 - Selected rules from rule-advisor
 - Task structure (managed via TaskCreate/TaskUpdate)
-- Quality standards from applicable rules
-
-## Important Notes
-
-- **Execute rule-advisor first**: Mandatory metacognitive step before implementation
-- **Update tasks after rule-advisor**: Reflect insights in task structure using TaskUpdate
-- **Follow firstActionGuidance**: Start with recommended action
-- **Monitor warningPatterns**: Watch for failure patterns throughout execution
+- Quality standards defined in the selectedRules output from rule-advisor
+- Monitor warningPatterns flags throughout execution and adjust approach when triggered

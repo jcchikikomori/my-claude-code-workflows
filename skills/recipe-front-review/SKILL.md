@@ -19,7 +19,6 @@ Orchestrator invokes sub-agents and passes structured JSON between them.
 
 Design Doc (uses most recent if omitted): $ARGUMENTS
 
-**Think deeply** Understand the essence of compliance validation and execute:
 
 ## Execution Flow
 
@@ -60,7 +59,7 @@ Invoke security-reviewer using Agent tool:
 - `approved` or `approved_with_notes` → Pass
 - `needs_revision` → Fail
 
-**Report both results independently using subagent output fields only** (do not add fields that are not in the subagent response):
+**Report both results independently using subagent output fields only**:
 
 ```
 Code Compliance: [complianceRate from code-reviewer]

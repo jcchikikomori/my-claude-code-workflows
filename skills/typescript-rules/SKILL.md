@@ -7,18 +7,17 @@ description: React/TypeScript frontend development rules including type safety, 
 
 ## Basic Principles
 
-✅ **Aggressive Refactoring** - Prevent technical debt and maintain health
-❌ **Unused "Just in Case" Code** - Violates YAGNI principle (Kent Beck)
+- **Aggressive Refactoring** - Prevent technical debt and maintain health
+- **Delete code when no current caller exists** - YAGNI principle (Kent Beck)
 
 ## Comment Writing Rules
 - **Function Description Focus**: Describe what the code "does"
-- **No Historical Information**: Do not record development history
-- **Timeless**: Write only content that remains valid whenever read
+- **Timeless content only**: Record decisions and rationale; leave chronological history to version control
 - **Conciseness**: Keep explanations to necessary minimum
 
 ## Type Safety
 
-**Absolute Rule**: any type is completely prohibited. It disables type checking and becomes a source of runtime errors.
+**Absolute Rule**: Replace every `any` with `unknown`, generics, or union types. `any` disables type checking and causes runtime errors.
 
 **any Type Alternatives (Priority Order)**
 1. **unknown Type + Type Guards**: Use for validating external input (API responses, localStorage, URL parameters)
@@ -61,8 +60,7 @@ function isUser(value: unknown): value is User {
 ## Coding Conventions
 
 **Component Design Criteria**
-- **Function Components (Mandatory)**: Official React recommendation, optimizable by modern tooling
-- **Classes Prohibited**: Class components completely deprecated (Exception: Error Boundary)
+- **Function components only**: Official React recommendation, optimizable by modern tooling (Exception: Error Boundary requires class component)
 - **Custom Hooks**: Standard pattern for logic reuse and dependency injection
 - **Component Hierarchy**: Atoms → Molecules → Organisms → Templates → Pages
 - **Co-location**: Place tests, styles, and related files alongside components
@@ -79,54 +77,42 @@ function isUser(value: unknown): value is User {
 - **Immutable Updates**: Use immutable patterns for state updates
 
 ```typescript
-// ✅ Immutable state update
+// Immutable state update — always create new arrays/objects
 setUsers(prev => [...prev, newUser])
-
-// ❌ Mutable state update
-users.push(newUser)
-setUsers(users)
 ```
 
 **Function Design**
 - **0-2 parameters maximum**: Use object for 3+ parameters
   ```typescript
-  // ✅ Object parameter
   function createUser({ name, email, role }: CreateUserParams) {}
   ```
 
 **Props Design (Props-driven Approach)**
 - Props are the interface: Define all necessary information as props
-- Avoid implicit dependencies: Do not depend on global state or context without necessity
+- Pass all data dependencies as props; use Context only for cross-cutting concerns (theme, auth, locale)
 - Type-safe: Always define Props type explicitly
 
 **Environment Variables**
 - **Use build tool's environment variable system**: `process.env` does not work in browsers
 - Centrally manage environment variables through configuration layer
-- Implement proper type safety and default value handling
+- Define a typed config object with defaults for every environment variable
 
 ```typescript
-// ✅ Build tool environment variables (public values only)
+// Use import.meta.env (not process.env — unavailable in browser bundles)
 const config = {
   apiUrl: import.meta.env.API_URL || 'http://localhost:3000',
   appName: import.meta.env.APP_NAME || 'My App'
 }
-
-// ❌ Does not work in frontend
-const apiUrl = process.env.API_URL
 ```
 
 **Security (Client-side Constraints)**
 - **CRITICAL**: All frontend code is public and visible in browser
-- **Never store secrets client-side**: No API keys, tokens, or secrets in environment variables
-- Do not include `.env` files in Git
-- Do not include sensitive information in error messages
+- **All secrets stay server-side**: Store API keys, tokens, and secrets on the backend only
+- Exclude `.env` files via `.gitignore`
+- Limit error messages to non-sensitive context
 
 ```typescript
-// ❌ Security risk: API key exposed in browser
-const apiKey = import.meta.env.API_KEY
-const response = await fetch(`https://api.example.com/data?key=${apiKey}`)
-
-// ✅ Correct: Backend manages secrets, frontend accesses via proxy
+// Backend manages secrets, frontend accesses via proxy
 const response = await fetch('/api/data') // Backend handles API key authentication
 ```
 
@@ -144,23 +130,17 @@ const response = await fetch('/api/data') // Backend handles API key authenticat
 - Imports use absolute paths (`src/`)
 
 **Clean Code Principles**
-- ✅ Delete unused code immediately
-- ✅ Delete debug `console.log()`
-- ❌ Commented-out code (manage history with version control)
-- ✅ Comments explain "why" (not "what")
+- Delete unused code immediately
+- Delete debug `console.log()`
+- Delete commented-out code (retrieve from version control when needed)
+- Comments explain "why" (not "what")
 
 ## Error Handling
 
-**Absolute Rule**: Error suppression prohibited. All errors must have log output and appropriate handling.
+**Absolute Rule**: Every caught error must be logged with context and either re-thrown to Error Boundary, returned as a Result error variant, or displayed as user-facing error state.
 
 **Fail-Fast Principle**: Fail quickly on errors to prevent continued processing in invalid states
 ```typescript
-// ❌ Prohibited: Unconditional fallback
-catch (error) {
-  return defaultValue // Hides error
-}
-
-// ✅ Required: Explicit failure
 catch (error) {
   logger.error('Processing failed', error)
   throw error // Handle with Error Boundary or higher layer
@@ -195,7 +175,7 @@ export class AppError extends Error {
 - API Layer: Convert fetch errors to domain errors
 
 **Structured Logging and Sensitive Information Protection**
-Never include sensitive information (password, token, apiKey, secret, creditCard) in logs
+Redact sensitive fields (password, token, apiKey, secret, creditCard) before logging
 
 **Asynchronous Error Handling in React**
 - Error Boundary setup mandatory: Catch rendering errors

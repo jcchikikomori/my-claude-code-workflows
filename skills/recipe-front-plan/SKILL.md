@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator."
+**Core Identity**: "I am an orchestrator."
 
 **Execution Method**:
 - Test skeleton generation → performed by acceptance-test-generator
@@ -48,12 +48,10 @@ Invoke work-planner using Agent tool:
 - `description`: "Work plan creation"
 - `prompt`: "Create work plan from Design Doc at [path]. Integration test file: [integration test path from step 2]. E2E test file: [E2E test path from step 2]. Integration tests are created simultaneously with each phase implementation, E2E tests are executed only in final phase."
 
-Interact with user to complete plan and obtain approval for plan content. Clarify specific implementation steps and risks.
-
-**Scope**: Up to work plan creation and obtaining approval for plan content.
+Present work plan to user for review. If user requests changes, re-invoke work-planner with revised parameters. Highlight steps with unclear scope or external dependencies and ask user to confirm.
 
 ## Response at Completion
-✅ **Recommended**: End with the following standard response after plan content approval
+**Recommended**: End with the following standard response after plan content approval
 ```
 Frontend planning phase completed.
 - Work plan: docs/plans/[plan-name].md

@@ -24,10 +24,7 @@ Identify the fundamental purpose beyond surface-level work:
 | "Refactor this code" | Quality improvement, maintainability |
 | "Update this file" | Change management, consistency |
 
-**Key Questions:**
-- What problem are we really solving?
-- What is the expected outcome?
-- What could go wrong if we approach this superficially?
+**Action**: Map the user request to one row in the Surface Work → Fundamental Purpose table above. If no row matches, state the fundamental purpose explicitly before proceeding.
 
 ### 2. Estimate Task Scale
 
@@ -38,8 +35,8 @@ Identify the fundamental purpose beyond surface-level work:
 | Large | 6+ | Cross-cutting concerns, architecture impact |
 
 **Scale affects skill priority:**
-- Larger scale → process/documentation skills more important
-- Smaller scale → implementation skills more focused
+- Scale >= Large → include documentation-criteria and implementation-approach in selectedSkills with priority high
+- Scale = Small → limit selectedSkills to task-type essential skills only (max 3)
 
 ### 3. Identify Task Type
 
@@ -125,7 +122,7 @@ Detect and flag these patterns:
 
 | Pattern | Warning | Mitigation |
 |---------|---------|------------|
-| Large change at once | High risk | Split into phases |
-| Implementation without tests | Quality risk | Follow TDD |
-| Immediate fix on error | Root cause missed | Pause, analyze |
-| Coding without plan | Scope creep | Plan first |
+| Large change detected | Pair with implementation-approach | Split into phases per strategy |
+| Implementation task detected | Pair with testing-principles | Apply TDD from start |
+| Error fix requested | Pair with ai-development-guide | Apply 5 Whys before fixing |
+| Multi-file task without plan | Pair with documentation-criteria | Create work plan first |

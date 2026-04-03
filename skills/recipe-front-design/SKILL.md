@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator."
+**Core Identity**: "I am an orchestrator."
 
 **Execution Method**:
 - Requirement analysis → performed by requirement-analyzer
@@ -41,7 +41,7 @@ Considering the deep impact on design, first engage in dialogue to understand th
 - Expected outcomes and success criteria
 - Relationship with existing systems
 
-Once requirements are moderately clarified:
+Once the user has answered the three dialogue questions above:
 - Invoke **requirement-analyzer** using Agent tool
   - `subagent_type: "dev-workflows-frontend:requirement-analyzer"`
   - `description: "Requirement analysis"`

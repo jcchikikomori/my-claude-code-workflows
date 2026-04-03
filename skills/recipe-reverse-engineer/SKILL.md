@@ -10,7 +10,7 @@ Target: $ARGUMENTS
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator."
+**Core Identity**: "I am an orchestrator."
 
 **Execution Protocol**:
 1. **Delegate all work through Agent tool** — invoke sub-agents, pass deliverable paths between them, and report results (permitted tools: see subagents-orchestration-guide "Orchestrator's Permitted Tools")
@@ -126,7 +126,7 @@ prompt: |
   verbose: false
 ```
 
-Note: `code_paths` is intentionally NOT provided. The verifier independently discovers code scope from the document, ensuring independent verification not constrained by scope-discoverer's output.
+Note: Omit `code_paths` — the verifier independently discovers code scope from the document, ensuring independent verification not constrained by scope-discoverer's output.
 
 **Store output as**: `$STEP_3_OUTPUT`
 
@@ -226,7 +226,7 @@ Map `$STEP_1_OUTPUT` units to Design Doc generation targets, carrying forward:
 
 #### Step 7: Design Doc Generation
 
-**Scope**: Document current architecture as-is. This is a documentation task, not a design improvement task.
+**Scope**: Document the current architecture exactly as implemented in code.
 
 **Standard mode (fullstack=No)**:
 
@@ -325,7 +325,7 @@ prompt: |
   verbose: false
 ```
 
-Note: `code_paths` is intentionally NOT provided. The verifier independently discovers code scope from the document.
+Note: Omit `code_paths` — the verifier independently discovers code scope from the document.
 
 **Store output as**: `$STEP_8_OUTPUT`
 

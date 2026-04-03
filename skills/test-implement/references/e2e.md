@@ -108,7 +108,7 @@ E2E tests require a running application with real data state. Unlike unit/integr
 
 ### Seed Data Strategy
 
-Prepare test data via API calls or database seeding — never through UI interaction:
+Prepare test data via API calls or database seeding:
 
 ```typescript
 // fixtures/seed.fixture.ts
@@ -135,7 +135,7 @@ export const test = base.extend<{ seededData: SeedResult }>({
 - Use the application's existing seeding mechanism if present; create new seed endpoints only when no alternative exists
 - Seed data setup belongs to test fixtures, not to a separate manual step
 - Each test must be self-contained: create its own data, clean up after
-- Use API endpoints or direct DB access for seeding — not UI flows
+- Seed data via API endpoints or direct DB access only
 
 ### Authentication Fixture
 
@@ -159,8 +159,8 @@ export const test = base.extend<{ playerPage: Page }>({
 
 **Principles**:
 - Use the application's existing authentication flow; auth fixtures must follow the same path that real users use
-- Do not use admin-only or internal-only endpoints for E2E auth (e.g., `force-login-as`)
-- Store test credentials in environment variables, never hardcoded
+- Use the application's production authentication flow for E2E auth (the same endpoints real users hit)
+- Store test credentials in environment variables only (`E2E_*` prefixed)
 - If the auth flow requires specific user records, seed them in the fixture
 
 ### Environment Checklist
@@ -183,12 +183,7 @@ Prefer accessible locators in this order:
 4. `page.getByTestId()` — last resort
 
 ```typescript
-// Preferred
 await page.getByRole('button', { name: 'Submit' }).click()
-
-// Avoid
-await page.locator('#submit-btn').click()
-await page.locator('.btn-primary').click()
 ```
 
 ## Assertions

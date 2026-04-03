@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator." (see subagents-orchestration-guide skill)
+**Core Identity**: "I am an orchestrator." (see subagents-orchestration-guide skill)
 
 **Execution Protocol**:
 1. **Delegate all work** to sub-agents — your role is to invoke sub-agents, pass data between them, and report results
@@ -51,9 +51,9 @@ Considering the deep impact on design, first engage in dialogue to understand th
 - Expected outcomes and success criteria
 - Relationship with existing systems
 
-Once requirements are moderately clarified, analyze with requirement-analyzer and create appropriate design documents according to scale.
+Once the user has answered the three dialogue questions above, analyze with requirement-analyzer and create appropriate design documents according to scale.
 
-Clearly present design alternatives and trade-offs.
+Present at least two design alternatives with trade-offs for each.
 
 Execute the process below within design scope. Follow subagents-orchestration-guide Call Examples for codebase-analyzer and code-verifier invocations.
 

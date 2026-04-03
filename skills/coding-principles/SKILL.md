@@ -15,18 +15,17 @@ description: Language-agnostic coding principles for maintainability, readabilit
 ## Code Quality
 
 ### Continuous Improvement
-- Refactor as you go - don't accumulate technical debt
+- Refactor related code within each change set — address style, naming, or structure issues in the files being modified
 - Improve code structure incrementally
 - Keep the codebase lean and focused
 - Delete unused code immediately
 
 ### Readability
 - Use meaningful, descriptive names drawn from the problem domain
-- Avoid abbreviations unless they are widely recognized
-- Avoid single-letter names except for loop counters or well-known conventions (i, j, x, y)
+- Use full words in names; abbreviations are acceptable only when widely recognized in the domain
+- Use descriptive names; single-letter names are acceptable only for loop counters or well-known conventions (i, j, x, y)
 - Extract magic numbers and strings into named constants
 - Keep code self-documenting where possible
-- Write code that humans can easily understand
 
 ## Function Design
 
@@ -49,7 +48,7 @@ description: Language-agnostic coding principles for maintainability, readabilit
 - Pure functions when possible (no side effects)
 - Separate data transformation from side effects
 - Use early returns to reduce nesting
-- Avoid deep nesting (maximum 3 levels)
+- Keep nesting to a maximum of 3 levels; use early returns or extracted functions to flatten deeper nesting
 
 ## Error Handling
 
@@ -82,9 +81,9 @@ description: Language-agnostic coding principles for maintainability, readabilit
 - **Resource management**: Handle memory, connections, and files properly
 
 ### When to Optimize
-- After identifying actual bottlenecks
+- After identifying actual bottlenecks through profiling
 - When performance issues are measurable
-- Not prematurely during initial development
+- Optimize only after measurable bottlenecks are identified, not during initial development
 
 ## Code Organization
 
@@ -108,14 +107,14 @@ description: Language-agnostic coding principles for maintainability, readabilit
 - **Note limitations**: Document known constraints or edge cases
 - **API documentation**: Public interfaces need clear documentation
 
-### When NOT to Comment
-- Avoid describing "how" (the code shows that)
-- Don't include historical information (use version control)
-- Remove commented-out code (use git to retrieve old code)
-- Avoid obvious comments that restate the code
+### Comment Scope
+- Comment the "what" and "why"; the code itself communicates the "how"
+- Record historical context in version control commit messages, not in comments
+- Delete commented-out code (retrieve from git history when needed)
+- Write comments that add information beyond what the code states
 
 ### Comment Quality
-- Keep comments concise and timeless
+- Write comments that remain accurate regardless of future code changes; avoid references to dates, versions, or temporary state
 - Update comments when changing code
 - Use proper grammar and formatting
 - Write for future maintainers
@@ -179,7 +178,7 @@ description: Language-agnostic coding principles for maintainability, readabilit
 - Document public APIs and interfaces
 - Include usage examples for complex functionality
 - Maintain README files for modules
-- Keep documentation in sync with code
+- Update documentation in the same commit that changes the corresponding behavior
 
 ### Architecture Documentation
 - Document high-level design decisions
@@ -193,7 +192,7 @@ description: Language-agnostic coding principles for maintainability, readabilit
 - Make atomic, focused commits
 - Write clear, descriptive commit messages
 - Commit working code (passes tests)
-- Avoid committing debug code or secrets
+- Commit only production-ready code; store secrets in environment variables or secret managers
 
 ### Code Review Readiness
 - Self-review before requesting review

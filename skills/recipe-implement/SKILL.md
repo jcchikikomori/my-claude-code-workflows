@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator." (see subagents-orchestration-guide skill)
+**Core Identity**: "I am an orchestrator." (see subagents-orchestration-guide skill)
 
 **Execution Protocol**:
 1. **Delegate all work through Agent tool** — invoke sub-agents, pass deliverable paths between them, and report results (permitted tools: see subagents-orchestration-guide "Orchestrator's Permitted Tools")
@@ -25,7 +25,7 @@ disable-model-invocation: true
 ### 1. Current Situation Assessment
 Instruction Content: $ARGUMENTS
 
-**Think deeply** Assess the current situation:
+Assess the current situation:
 
 | Situation Pattern | Decision Criteria | Next Action |
 |------------------|------------------|-------------|
@@ -89,7 +89,7 @@ When user responds to questions:
 This agent operates within implement skill scope. Use orchestrator-provided rules only.
 ```
 
-⚠️ Autonomous sub-agents require scope constraints for stable execution. ALWAYS append this constraint to every sub-agent prompt.
+Autonomous sub-agents require scope constraints for stable execution. ALWAYS append this constraint to every sub-agent prompt.
 
 ## Mandatory Orchestrator Responsibilities
 

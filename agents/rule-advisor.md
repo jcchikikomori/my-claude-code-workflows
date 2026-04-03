@@ -132,7 +132,7 @@ Return structured JSON:
   "criticalRules": [
     "Complete static checking before proceeding",
     "User approval mandatory before implementation",
-    "No commits before quality check completion"
+    "Complete quality check before committing"
   ],
   "confidence": "high|medium|low"
 }

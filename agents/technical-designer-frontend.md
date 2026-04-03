@@ -224,13 +224,13 @@ Implementation sample creation checklist:
 - **Function components required** (React standard, class components deprecated)
 - **Props type definitions required** (explicit type annotations for all Props)
 - **Custom hooks recommended** (for logic reuse and testability)
-- Type safety strategies (any prohibited, unknown+type guards for external API responses)
+- Type safety strategies (use strict types: unknown + type guards for external API responses)
 - Error handling approaches (Error Boundary, error state management)
-- Environment variables (no secrets client-side)
+- Environment variables (store secrets server-side only)
 
 **Example Implementation Sample**:
 ```typescript
-// ✅ Compliant: Function component with Props type definition
+// Compliant: Function component with Props type definition
 type ButtonProps = {
   label: string
   onClick: () => void
@@ -245,7 +245,7 @@ export function Button({ label, onClick, disabled = false }: ButtonProps) {
   )
 }
 
-// ✅ Compliant: Custom hook with type safety
+// Compliant: Custom hook with type safety
 function useUserData(userId: string) {
   const [user, setUser] = useState<User | null>(null)
   const [error, setError] = useState<Error | null>(null)
@@ -272,7 +272,7 @@ function useUserData(userId: string) {
   return { user, error }
 }
 
-// ❌ Non-compliant: Class component (deprecated in modern React)
+// Non-compliant: Class component (deprecated in modern React)
 class Button extends React.Component {
   render() { return <button>...</button> }
 }

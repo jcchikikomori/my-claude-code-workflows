@@ -55,8 +55,8 @@ Evaluate each test for:
 - Clear Arrange section (setup)
 - Single Act (action)
 - Meaningful Assert (verification)
-- No shared state
-- No time-dependent logic
+- Isolated state per test (reset in beforeEach)
+- Deterministic execution (mock time/random sources when needed)
 
 ### 4. Return JSON Result
 Return the JSON result as the final response. See Output Format for the schema.
@@ -115,9 +115,9 @@ Return the JSON result as the final response. See Output Format for the schema.
 - [ ] Every test has corresponding skeleton comment
 - [ ] Observable result from Behavior is asserted
 - [ ] All Verification items are covered
-- [ ] No internal component mocking in integration tests
+- [ ] Mock only external dependencies in integration tests
 - [ ] Clear Arrange/Act/Assert separation
-- [ ] No test interdependencies
+- [ ] Each test executes independently of other tests
 - [ ] Deterministic execution (no random/time dependency)
 - [ ] Test name matches verification content
 - [ ] Final response is the JSON output
@@ -130,7 +130,7 @@ Return the JSON result as the final response. See Output Format for the schema.
 
 ### Missing Verification Items
 **Issue**: Listed verification items not all covered
-**Fix**: Add missing expect() calls for each verification item
+**Fix**: Add missing assertions for each verification item
 
 ### Mock Boundary Violation
 **Issue**: Internal components mocked in integration test
@@ -138,8 +138,8 @@ Return the JSON result as the final response. See Output Format for the schema.
 
 ### AAA Structure Unclear
 **Issue**: Setup, action, and assertion mixed together
-**Fix**: Reorganize into clear // Arrange, // Act, // Assert sections
+**Fix**: Reorganize into clear Arrange, Act, Assert sections using the project's comment syntax
 
 ### Test Independence Violation
 **Issue**: Tests share state or depend on execution order
-**Fix**: Reset state in beforeEach, make each test self-contained
+**Fix**: Reset state in setup hooks, make each test self-contained

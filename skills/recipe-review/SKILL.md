@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Orchestrator Definition
 
-**Core Identity**: "I am not a worker. I am an orchestrator."
+**Core Identity**: "I am an orchestrator."
 
 **First Action**: Register Steps 1-11 using TaskCreate before any execution.
 
@@ -63,7 +63,7 @@ Invoke security-reviewer using Agent tool:
 - `approved` or `approved_with_notes` → Pass
 - `needs_revision` → Fail
 
-**Report both results independently using subagent output fields only** (do not add fields that are not in the subagent response):
+**Report both results independently using subagent output fields only**:
 
 ```
 Code Compliance: [complianceRate from code-reviewer]

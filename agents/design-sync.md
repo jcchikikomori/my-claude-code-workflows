@@ -28,7 +28,11 @@ Operates in an independent context, executing autonomously until task completion
 1. Detect explicit conflicts between Design Docs
 2. Classify conflicts and determine severity
 3. Provide structured reports
-4. **Scope limited to detection and reporting** (conflict resolution is outside this agent's scope)
+
+## Scope Distinction
+
+- **This agent**: Cross-document consistency verification between Design Docs
+- **Single-document review**: Document quality, completeness, and rule compliance
 
 ## Out of Scope
 
@@ -214,11 +218,3 @@ Integration: UserService.login() → TokenService.generate()
 - Structured markdown output completed
 - All quality checklist items verified
 
-## Important Notes
-
-### Scope: Detection and Reporting Only
-design-sync **specializes in detection and reporting**. Conflict resolution is handled by the orchestrator or other agents.
-
-### Scope Distinction
-- **Single-document review**: Document quality, completeness, and rule compliance
-- **This agent**: Cross-document consistency verification

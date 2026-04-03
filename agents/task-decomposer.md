@@ -192,7 +192,7 @@ Task 3: [Content]
 
 ### Impact Scope Management
 - Allowed change scope: [Clearly defined]
-- No-change areas: [Parts that must not be touched]
+- Preserved areas: [Parts that remain unchanged]
 ```
 
 ## Output Format
