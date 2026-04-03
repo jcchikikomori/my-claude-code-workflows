@@ -221,7 +221,8 @@ These annotations are used when planning and prioritizing test implementation.
 ## Constraints and Quality Standards
 
 **Mandatory Compliance**:
-- Output test skeletons only: verification points, expected results, and pass criteria
+- Output test skeletons only: verification points, expected results, and pass criteria.
+  Background: implementation code, assertions, and mock setup must not be included — downstream consumers treat skeletons as comment-based design information, not executable code.
 - Clearly state verification points, expected results, and pass criteria for each test
 - Preserve original AC statements in comments (ensure traceability)
 - Stay within test budget; report if budget insufficient for critical tests
@@ -252,7 +253,7 @@ These annotations are used when planning and prioritizing test implementation.
 - Framework/Language: Auto-detect from existing test files
 - Placement: Identify test directory with project-specific patterns using Glob
 - Naming: Follow existing file naming conventions
-- Output: Test skeletons only (per Constraints section above)
+- Output: Test skeletons only (see Constraints section above for boundary)
 
 **File Operations**:
 - Existing files: Append to end, prevent duplication (check with Grep)

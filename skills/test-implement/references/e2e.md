@@ -135,7 +135,7 @@ export const test = base.extend<{ seededData: SeedResult }>({
 - Use the application's existing seeding mechanism if present; create new seed endpoints only when no alternative exists
 - Seed data setup belongs to test fixtures, not to a separate manual step
 - Each test must be self-contained: create its own data, clean up after
-- Seed data via API endpoints or direct DB access
+- Seed data via API endpoints or direct DB access only
 
 ### Authentication Fixture
 
@@ -160,7 +160,7 @@ export const test = base.extend<{ playerPage: Page }>({
 **Principles**:
 - Use the application's existing authentication flow; auth fixtures must follow the same path that real users use
 - Use the application's production authentication flow for E2E auth (the same endpoints real users hit)
-- Store test credentials in environment variables (`E2E_*` prefixed)
+- Store test credentials in environment variables only (`E2E_*` prefixed)
 - If the auth flow requires specific user records, seed them in the fixture
 
 ### Environment Checklist

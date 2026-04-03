@@ -34,7 +34,6 @@ Design philosophy that prioritizes improving primary code reliability over fallb
 
 ### Criteria for Fallback Implementation
 - **Fallback rule**: Implement fallbacks only when explicitly defined in Design Doc
-- **Exception Approval**: Implement only when explicitly defined in Design Doc
 - **Layer Responsibilities**:
   - Component Layer: Use Error Boundary for error handling
   - Hook Layer: Implement decisions based on business requirements

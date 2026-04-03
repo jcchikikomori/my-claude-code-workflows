@@ -25,7 +25,6 @@ description: Language-agnostic testing principles including TDD, test quality, c
 
 2. **GREEN**: Write minimal code to pass
    - Implement just enough to make the test pass
-   - Implement the minimum code that makes the test pass
    - Focus on making it work
 
 3. **REFACTOR**: Improve code structure

@@ -127,12 +127,17 @@ validateEmail(email, context) { /* ... */ }
 **Cause**: Surface-level fixes without understanding root cause
 **Avoidance**: Identify root cause with 5 Whys before fixing
 
-### Pattern 2: Implementation Without Sufficient Testing
+### Pattern 2: Circumventing Correctness Guarantees
+**Symptom**: Bypassing safety mechanisms (type systems, validation, contracts)
+**Cause**: Impulse to avoid correctness errors
+**Avoidance**: Use language-appropriate safety mechanisms (static checking, runtime validation, contracts, assertions)
+
+### Pattern 3: Implementation Without Sufficient Testing
 **Symptom**: Many bugs after implementation
 **Cause**: Ignoring Red-Green-Refactor process
 **Avoidance**: Always start with failing tests
 
-### Pattern 3: Ignoring Technical Uncertainty
+### Pattern 4: Ignoring Technical Uncertainty
 **Symptom**: Frequent unexpected errors when introducing new technology
 **Cause**: Assuming "it should work according to official documentation" without prior investigation
 **Avoidance**:
@@ -144,7 +149,7 @@ validateEmail(email, context) { /* ... */ }
   ```
 - For low certainty cases, create minimal verification code first
 
-### Pattern 4: Insufficient Existing Code Investigation
+### Pattern 5: Insufficient Existing Code Investigation
 **Symptom**: Duplicate implementations, architecture inconsistency, integration failures
 **Cause**: Insufficient understanding of existing code before implementation
 **Avoidance Methods**:

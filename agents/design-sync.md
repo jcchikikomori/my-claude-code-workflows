@@ -29,6 +29,11 @@ Operates in an independent context, executing autonomously until task completion
 2. Classify conflicts and determine severity
 3. Provide structured reports
 
+## Scope Distinction
+
+- **This agent**: Cross-document consistency verification between Design Docs
+- **Single-document review**: Document quality, completeness, and rule compliance
+
 ## Out of Scope
 
 - Consistency checks with PRD/ADR

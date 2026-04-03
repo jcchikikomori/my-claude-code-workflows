@@ -418,6 +418,13 @@ Stop autonomous execution and escalate to user in the following cases:
 - **Flow confirmation**: After getting approval, always check next step with work planning flow (large/medium/small scale)
 - **Consistency verification**: Resolve subagent conflicts per Decision precedence (see Delegation Boundary section)
 
+## Required Dialogue Points with Humans
+
+### Basic Principles
+- **Stopping is mandatory**: Always wait for human response at each stop point defined in the Explicit Stop Points table
+- **Confirmation → Agreement cycle**: After document generation, proceed to next step after agreement or fix instructions in update mode
+- **Specific questions**: Make decisions easy with options (A/B/C) or comparison tables
+
 ## Action Checklist
 
 When receiving a task, check the following:

@@ -47,7 +47,7 @@ Related Issue/PR: #XXX (if any)
 
 Select ONE phase structure based on implementation approach from Design Doc.
 See documentation-criteria skill for detailed Phase Division Criteria.
-All quality checks follow staged quality checks from ai-development-guide skill.
+All quality checks follow Quality Check Workflow from ai-development-guide skill.
 
 ### Option A: Vertical Slice Phase Structure
 

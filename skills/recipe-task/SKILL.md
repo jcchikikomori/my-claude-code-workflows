@@ -50,6 +50,8 @@ Break down the task based on rule-advisor's guidance:
 **Step 4: Execute Implementation**
 
 Proceed with task execution following:
+- Start with `metaCognitiveGuidance.firstStep` action from rule-advisor
+- Update task structure with TaskUpdate to reflect rule-advisor insights
 - Selected rules from rule-advisor
 - Task structure (managed via TaskCreate/TaskUpdate)
 - Quality standards defined in the selectedRules output from rule-advisor
