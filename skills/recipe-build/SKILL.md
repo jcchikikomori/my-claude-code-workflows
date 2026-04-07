@@ -87,9 +87,13 @@ For EACH task, YOU MUST:
      - `approved` → Proceed to step 4
    - `readyForQualityCheck: true` → Proceed to step 4
 4. **INVOKE quality-fixer**: Execute all quality checks and fixes
-5. **COMMIT on approval**: After `approved: true` from quality-fixer → Execute git commit
+5. **CHECK quality-fixer response**:
+   - `stub_detected` → Return to step 2 with `incompleteImplementations[]` details
+   - `blocked` → STOP and escalate to user
+   - `approved` → Proceed to step 6
+6. **COMMIT on approval**: Execute git commit
 
-**CRITICAL**: Parse every sub-agent response for status fields. Execute the matching branch in the 4-step cycle. Proceed to next task only after quality-fixer returns `approved: true`.
+**CRITICAL**: Parse every sub-agent response for status fields. Execute the matching branch in the 4-step cycle. Proceed to next task only after quality-fixer returns `approved`.
 
 ## Sub-agent Invocation Constraints
 

@@ -22,9 +22,28 @@ Executes quality checks and provides a state where all Phases complete with zero
 
 ## Workflow
 
-### Environment-Aware Quality Assurance
+### Step 1: Incomplete Implementation Check [BLOCKING — before any quality checks]
 
-**Step 1: Detect Quality Check Commands**
+Review the diff of changed files to detect stub or incomplete implementations. This step runs before any quality checks because verifying the quality of unfinished code is meaningless.
+
+**How to check**: Use `git diff HEAD` to review all uncommitted changes in the working tree.
+
+**Indicators of incomplete implementation** (stub_detected):
+- `// TODO`, `// FIXME`, `// HACK`, `throw new Error("not implemented")` or equivalent
+- Methods returning only hardcoded placeholder values (e.g., `return ""`, `return 0`, `return []`) when the method signature or context implies real computation
+- Empty method bodies or bodies containing only `pass` / `panic("TODO")` / similar no-op statements
+- Comments indicating deferred implementation (e.g., "will be added in a follow-up task")
+
+**NOT considered incomplete** (do not flag):
+- Intentionally minimal implementations that satisfy the interface contract and produce correct output
+- Functions with TODO comments but whose current logic is functionally correct
+- Legitimate empty returns or default values that match the expected behavior
+
+**If any incomplete implementation is found**: Stop immediately. Return `status: "stub_detected"` without proceeding to quality checks (see Output Format).
+
+**If no incomplete implementation is found**: Proceed to Step 2.
+
+### Step 2: Detect Quality Check Commands
 ```bash
 # Auto-detect from project manifest files
 # Identify project structure and extract quality commands:
@@ -33,27 +52,31 @@ Executes quality checks and provides a state where all Phases complete with zero
 # - Build configuration → extract build/check commands
 ```
 
-**Step 2: Execute Quality Checks**
+### Step 3: Execute Quality Checks
 Follow ai-development-guide skill "Quality Check Workflow" section:
 - Basic checks (lint, format, build)
 - Tests (unit, integration)
 - Final gate (all must pass)
 
-**Step 3: Fix Errors**
+### Step 4: Fix Errors
 Apply fixes per coding-principles and testing-principles skills.
 
-**Step 4: Repeat Until Approved**
+### Step 5: Repeat Until Approved
 - Address all errors in each phase before proceeding to next phase
 - Error found → Fix immediately → Re-run checks
-- All pass → proceed to Step 5
-- Cannot determine spec → proceed to Step 5 with `blocked` status
+- All pass → proceed to Step 6
+- Cannot determine spec → proceed to Step 6 with `blocked` status
 
-**Step 5: Return JSON Result**
+### Step 6: Return JSON Result
 Return one of the following as the final response (see Output Format for schemas):
 - `status: "approved"` — all quality checks pass
+- `status: "stub_detected"` — incomplete implementation found (from Step 1)
 - `status: "blocked"` — specification unclear, business judgment required
 
-## Status Determination Criteria (Binary Determination)
+## Status Determination Criteria
+
+### stub_detected (Incomplete implementation found — Step 1 gate)
+Returned immediately when Step 1 finds incomplete implementations in the diff. Quality checks are not executed. The orchestrator should route this back to the task-executor for completion.
 
 ### approved (All quality checks pass)
 - All tests pass
@@ -139,6 +162,21 @@ Return one of the following as the final response (see Output Format for schemas
 }
 ```
 
+**stub_detected response format (incomplete implementation)**:
+```json
+{
+  "status": "stub_detected",
+  "reason": "Incomplete implementation detected in changed files",
+  "incompleteImplementations": [
+    {
+      "file": "path/to/file",
+      "location": "method or function name",
+      "description": "What is incomplete and what the implementation should do"
+    }
+  ]
+}
+```
+
 **blocked response format (specification conflict)**:
 ```json
 {
@@ -198,11 +236,11 @@ Issues requiring fixes:
 ✅ Phase [Number] Complete! Proceeding to next phase.
 ```
 
-This is intermediate output only. The final response must be the JSON result (Step 5).
+This is intermediate output only. The final response must be the JSON result (Step 6).
 
 ## Completion Criteria
 
-- [ ] Final response is a single JSON with status `approved` or `blocked`
+- [ ] Final response is a single JSON with status `approved`, `stub_detected`, or `blocked`
 
 ## Important Principles
 

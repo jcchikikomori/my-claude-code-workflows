@@ -175,7 +175,7 @@ Subagents respond in JSON format. Key fields for orchestrator decisions:
 - **codebase-analyzer**: analysisScope.categoriesDetected, dataModel.detected, focusAreas[], existingElements count, limitations
 - **code-verifier**: status (consistent/mostly_consistent/needs_review/inconsistent), consistencyScore, discrepancies[], reverseCoverage (including dataOperationsInCode, testBoundariesSectionPresent). Pre-implementation: verifies Design Doc claims against existing codebase. Post-implementation: verifies implementation consistency against Design Doc (pass `code_paths` scoped to changed files)
 - **task-executor**: status (escalation_needed/completed), escalation_type (design_compliance_violation/similar_function_found/investigation_target_not_found/out_of_scope_file), testsAdded, requiresTestReview
-- **quality-fixer**: status (approved/blocked). Discriminate blocked type by `reason` field: `"Cannot determine due to unclear specification"` → read `blockingIssues[]` for specification details; `"Execution prerequisites not met"` → read `missingPrerequisites[]` with `resolutionSteps` — present these to the user as actionable next steps
+- **quality-fixer**: status (approved/stub_detected/blocked). `stub_detected` → route back to task-executor with `incompleteImplementations[]` details for completion, then re-run quality-fixer. `blocked` → discriminate by `reason` field: `"Cannot determine due to unclear specification"` → read `blockingIssues[]` for specification details; `"Execution prerequisites not met"` → read `missingPrerequisites[]` with `resolutionSteps` — present these to the user as actionable next steps
 - **document-reviewer**: approvalReady (true/false)
 - **design-sync**: sync_status (synced/conflicts_found)
 - **integration-test-reviewer**: status (approved/needs_revision/blocked), requiredFixes
@@ -292,7 +292,10 @@ graph TD
     ESCJUDGE -->|No issues| QF
     ITR -->|needs_revision| TE
     ITR -->|approved| QF
-    QF[quality-fixer: Quality check and fixes] --> COMMIT[Orchestrator: Execute git commit]
+    QF[quality-fixer: Quality check and fixes] --> QFJUDGE{quality-fixer result}
+    QFJUDGE -->|stub_detected| TE
+    QFJUDGE -->|approved| COMMIT[Orchestrator: Execute git commit]
+    QFJUDGE -->|blocked| USERESC
     COMMIT --> CHECK{Any remaining tasks?}
     CHECK -->|Yes| LOOP
     CHECK -->|No| VERIFY[Post-implementation verification]
@@ -353,7 +356,10 @@ Stop autonomous execution and escalate to user in the following cases:
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3
 3. quality-fixer → Quality check and fixes
-4. git commit → Execute with Bash (on `approved: true`)
+   - `stub_detected` → Return to step 1 with `incompleteImplementations[]` details
+   - `blocked` → Escalate to user
+   - `approved` → Proceed to step 4
+4. git commit → Execute with Bash (on `approved`)
 
 ### Progress Tracking
 

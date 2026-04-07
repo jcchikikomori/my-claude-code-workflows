@@ -144,7 +144,10 @@ Each task uses the standard 4-step cycle with layer-appropriate agents:
 1. task-executor → Implementation
 2. Escalation check
 3. quality-fixer → Quality check and fixes
-4. git commit (on approved: true)
+   - stub_detected → Return to step 1 with incompleteImplementations details
+   - blocked → Escalate to user
+   - approved → Proceed to step 4
+4. git commit (on approved)
 ```
 
 ### frontend-task
@@ -152,7 +155,10 @@ Each task uses the standard 4-step cycle with layer-appropriate agents:
 1. task-executor-frontend → Implementation
 2. Escalation check
 3. quality-fixer-frontend → Quality check and fixes
-4. git commit (on approved: true)
+   - stub_detected → Return to step 1 with incompleteImplementations details
+   - blocked → Escalate to user
+   - approved → Proceed to step 4
+4. git commit (on approved)
 ```
 
 ### integration-test-reviewer Placement

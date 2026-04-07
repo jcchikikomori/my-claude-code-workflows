@@ -104,7 +104,10 @@ Autonomous sub-agents require scope constraints for stable execution. ALWAYS app
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3
 3. quality-fixer → Quality check and fixes
-4. git commit → Execute with Bash (on `approved: true`)
+   - `stub_detected` → Return to step 1 with `incompleteImplementations[]` details
+   - `blocked` → Escalate to user
+   - `approved` → Proceed to step 4
+4. git commit → Execute with Bash (on `approved`)
 
 ### Post-Implementation Verification (After All Tasks Complete)
 
