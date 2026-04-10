@@ -1,1 +1,0 @@
-../../agents/web-qa-reviewer.md
