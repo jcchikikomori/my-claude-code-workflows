@@ -1,5 +1,5 @@
 {
-  "name": "my-claude-code-workflows",
+  "name": "claude-workflow",
   "owner": {
     "name": "John Cyrill Corsanes",
     "url": "https://github.com/jcchikikomori"
@@ -9,23 +9,30 @@
   },
   "plugins": [
     {
-      "name": "dev-workflows",
-      "source": "./backend",
-      "description": "Skills + Subagents for backend development - Use skills for coding guidance, or run recipe workflows for full orchestrated agentic coding with specialized agents"
+      "name": "skills",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jcchikikomori/skills-md.git"
+      },
+      "description": "Language and framework-specific rules — Ruby, Python, React, Node.js, Docker, and more. Complements the dev/qa plugins with technology-specific coding standards.",
+      "category": "skills",
+      "homepage": "https://github.com/jcchikikomori/skills-md"
     },
     {
-      "name": "dev-workflows-frontend",
-      "source": "./frontend",
-      "description": "Skills + Subagents for React/TypeScript - Use skills for coding guidance, or run recipe workflows for full orchestrated agentic coding with specialized agents"
+      "name": "dev",
+      "source": "./plugin-dev",
+      "description": "Skills + Subagents for development — web, mobile, and integrations. Recipes for backend, frontend, and full-stack agentic coding.",
+      "category": "agentic-coding"
     },
     {
-      "name": "dev-skills",
-      "source": "./skills-only",
-      "description": "Lightweight skills for users with existing workflows - coding best practices, testing principles, and design guidelines without recipe workflows or agents"
+      "name": "qa",
+      "source": "./plugin-qa",
+      "description": "Skills + Subagents for QA — web, mobile, and integration testing. Recipes for acceptance tests, E2E test generation, and browser-layer review.",
+      "category": "product-quality"
     },
     {
       "name": "env-guard",
-      "source": "./env-guard",
+      "source": "./plugin-env-guard",
       "description": "Prevents Claude Code from reading or leaking sensitive files — .env, credentials, SSH keys — via hook enforcement and behavioral guidance",
       "category": "behavior-control"
     },
@@ -50,14 +57,14 @@
       "homepage": "https://github.com/shinpr/claude-code-discover"
     },
     {
-      "name": "linear-prism",
+      "name": "caveman",
       "source": {
         "source": "url",
-        "url": "https://github.com/shinpr/linear-prism.git"
+        "url": "https://github.com/JuliusBrussee/caveman.git"
       },
-      "description": "Turns requirements into structured Linear tasks — validates before decomposing, so downstream design starts clean",
-      "category": "workflow-orchestration",
-      "homepage": "https://github.com/shinpr/linear-prism"
+      "description": "A Claude Code skill/plugin and Codex plugin that makes agent talk like caveman — cutting ~75% of output tokens while keeping full technical accuracy.",
+      "category": "behavior-control",
+      "homepage": "https://github.com/JuliusBrussee/caveman"
     }
   ]
 }
