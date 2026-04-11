@@ -172,10 +172,10 @@ Construct the prompt from the agent's Input Parameters section and the deliverab
 
 Subagents respond in JSON format. Key fields for orchestrator decisions:
 - **requirement-analyzer**: scale, confidence, affectedLayers, adrRequired, scopeDependencies, questions
-- **codebase-analyzer**: analysisScope.categoriesDetected, dataModel.detected, focusAreas[], existingElements count, limitations
+- **codebase-analyzer**: analysisScope.categoriesDetected, dataModel.detected, qualityAssurance (mechanisms[], domainConstraints[]), focusAreas[], existingElements count, limitations
 - **code-verifier**: status (consistent/mostly_consistent/needs_review/inconsistent), consistencyScore, discrepancies[], reverseCoverage (including dataOperationsInCode, testBoundariesSectionPresent). Pre-implementation: verifies Design Doc claims against existing codebase. Post-implementation: verifies implementation consistency against Design Doc (pass `code_paths` scoped to changed files)
-- **task-executor**: status (escalation_needed/completed), escalation_type (design_compliance_violation/similar_function_found/investigation_target_not_found/out_of_scope_file), testsAdded, requiresTestReview
-- **quality-fixer**: status (approved/stub_detected/blocked). `stub_detected` → route back to task-executor with `incompleteImplementations[]` details for completion, then re-run quality-fixer. `blocked` → discriminate by `reason` field: `"Cannot determine due to unclear specification"` → read `blockingIssues[]` for specification details; `"Execution prerequisites not met"` → read `missingPrerequisites[]` with `resolutionSteps` — present these to the user as actionable next steps
+- **task-executor**: status (escalation_needed/completed), escalation_type (design_compliance_violation/similar_function_found/investigation_target_not_found/out_of_scope_file/dependency_version_uncertain), testsAdded, requiresTestReview
+- **quality-fixer**: Input: `task_file` (path to current task file — always pass this in orchestrated flows). Status: approved/stub_detected/blocked. `stub_detected` → route back to task-executor with `incompleteImplementations[]` details for completion, then re-run quality-fixer. `blocked` → discriminate by `reason` field: `"Cannot determine due to unclear specification"` → read `blockingIssues[]` for specification details; `"Execution prerequisites not met"` → read `missingPrerequisites[]` with `resolutionSteps` — present these to the user as actionable next steps
 - **document-reviewer**: approvalReady (true/false)
 - **design-sync**: sync_status (synced/conflicts_found)
 - **integration-test-reviewer**: status (approved/needs_revision/blocked), requiredFixes
@@ -355,7 +355,7 @@ Stop autonomous execution and escalate to user in the following cases:
      - `needs_revision` → Return to step 1 with `requiredFixes`
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3
-3. quality-fixer → Quality check and fixes
+3. quality-fixer → Quality check and fixes. **Always pass** the current task file path as `task_file`
    - `stub_detected` → Return to step 1 with `incompleteImplementations[]` details
    - `blocked` → Escalate to user
    - `approved` → Proceed to step 4
@@ -378,7 +378,7 @@ Register overall phases using TaskCreate. Update each phase with TaskUpdate as i
    #### codebase-analyzer → technical-designer
 
    **Pass to codebase-analyzer**: requirement-analyzer JSON output, PRD path (if exists), original user requirements
-   **Pass to technical-designer**: codebase-analyzer JSON output as additional context in the Design Doc creation prompt. The designer uses `focusAreas`, `dataModel`, and `dataTransformationPipelines` to inform the Existing Codebase Analysis and Verification Strategy sections.
+   **Pass to technical-designer**: codebase-analyzer JSON output as additional context in the Design Doc creation prompt. The designer uses `focusAreas`, `dataModel`, `dataTransformationPipelines`, and `qualityAssurance` to inform the Existing Codebase Analysis, Verification Strategy, and Quality Assurance Mechanisms sections.
 
    #### code-verifier → document-reviewer (Design Doc review)
 

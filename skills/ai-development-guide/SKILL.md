@@ -150,14 +150,15 @@ validateEmail(email, context) { /* ... */ }
 - For low certainty cases, create minimal verification code first
 
 ### Pattern 5: Insufficient Existing Code Investigation
-**Symptom**: Duplicate implementations, architecture inconsistency, integration failures
-**Cause**: Insufficient understanding of existing code before implementation
+**Symptom**: Duplicate implementations, architecture inconsistency, integration failures, adopting outdated patterns
+**Cause**: Insufficient understanding of existing code before implementation; referencing only nearby files without verifying representativeness
 **Avoidance Methods**:
 - Before implementation, always search for similar functionality (using domain, responsibility, configuration patterns as keywords)
 - Similar functionality found → Use that implementation (do not create new implementation)
 - Similar functionality is technical debt → Create ADR improvement proposal before implementation
 - No similar functionality exists → Implement new functionality following existing design philosophy
 - Record all decisions and rationale in "Existing Codebase Analysis" section of Design Doc
+- **Reference representativeness check**: When adopting a pattern or dependency from nearby code, verify it is representative across the repository before adopting — nearby files alone are an insufficient basis
 
 ## Debugging Techniques
 
@@ -198,6 +199,16 @@ Key elements:
 - Current state (relevant state variables)
 - Timestamp (for correlation)
 ```
+
+## Quality Assurance Mechanism Awareness
+
+Before executing quality checks, identify what quality mechanisms exist for the change area:
+- Primary detection: inspect the change area's file types, project manifest, and configuration to identify applicable quality tools
+  - Check CI pipeline definitions for checks that cover the affected paths
+  - Check for domain-specific linter or validator configurations (e.g., schema validators, API spec validators, configuration file linters)
+  - Check for domain-specific constraints in project configuration (naming rules, length limits, format requirements)
+- Supplementary hint: IF task file specifies Quality Assurance Mechanisms → use them as additional hints for which domain-specific checks to look for
+- Include discovered domain-specific checks alongside standard quality phases below
 
 ## Quality Check Workflow
 

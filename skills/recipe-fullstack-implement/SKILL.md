@@ -124,7 +124,7 @@ Autonomous sub-agents require scope constraints for stable execution. ALWAYS app
 **Rules**:
 1. Execute ONE task completely before starting next (each task goes through the full 4-step cycle via Agent tool, using the correct executor per filename pattern)
 2. Check executor status before quality-fixer (escalation check)
-3. Quality-fixer MUST run after each executor before proceeding to commit
+3. Quality-fixer MUST run after each executor before proceeding to commit. **Always pass** the current task file path as `task_file`
 4. Check quality-fixer response:
    - `stub_detected` → Return to executor with `incompleteImplementations[]` details
    - `blocked` → Escalate to user
