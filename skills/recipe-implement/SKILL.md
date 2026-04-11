@@ -103,7 +103,7 @@ Autonomous sub-agents require scope constraints for stable execution. ALWAYS app
      - `needs_revision` → Return to step 1 with `requiredFixes`
      - `approved` → Proceed to step 3
    - Otherwise → Proceed to step 3
-3. quality-fixer → Quality check and fixes
+3. quality-fixer → Quality check and fixes. **Always pass** the current task file path as `task_file`
    - `stub_detected` → Return to step 1 with `incompleteImplementations[]` details
    - `blocked` → Escalate to user
    - `approved` → Proceed to step 4

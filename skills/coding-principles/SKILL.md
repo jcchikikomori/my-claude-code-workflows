@@ -72,6 +72,18 @@ description: Language-agnostic coding principles for maintainability, readabilit
 - Minimize inter-module dependencies
 - Facilitate testing through mockable dependencies
 
+## Reference Representativeness
+
+### Verifying References Before Adoption
+When adopting patterns, APIs, or dependencies from existing code:
+- **IF** referencing only 2-3 nearby files → **THEN** confirm the pattern is representative by checking usage across the repository before adopting
+- **IF** multiple approaches coexist in the repository → **THEN** identify the majority pattern and make a deliberate choice — selecting whichever is nearest is insufficient
+- **IF** adopting an external dependency (library, plugin, SDK) → **THEN** verify repository-wide usage distribution for the same dependency; if the appropriate version cannot be determined from repository state alone, escalate
+- **IF** following an existing pattern → **THEN** state the reason for following it when an alternative exists (e.g., consistency with surrounding code, avoiding breaking changes, pending coordinated update)
+
+### Principle
+Nearby code is a starting point for investigation, not a sufficient basis for adoption. Verify that what you reference is representative of the repository's conventions and current best practices before using it as a model.
+
 ## Performance Considerations
 
 ### Optimization Approach

@@ -25,6 +25,15 @@ Related Issue/PR: #XXX (if any)
 - **Success criteria**: [extracted from Design Doc]
 - **Failure response**: [extracted from Design Doc]
 
+## Quality Assurance Mechanisms (from Design Doc)
+
+Adopted quality gates for the change area. Each task in this plan must satisfy these mechanisms.
+
+| Mechanism | Enforces | Config Location | Covered Files |
+|-----------|----------|-----------------|---------------|
+| [Tool/check name] | [What quality aspect it enforces] | [path/to/config] | [file paths or patterns covered, or "project-wide"] |
+| [Domain constraint] | [What it enforces] | [path/to/source] | [file paths or patterns covered, or "project-wide"] |
+
 ## Design-to-Plan Traceability
 
 Maps each Design Doc technical requirement to the covering task(s). One row per extracted item. Every row must have at least one covering task, or an explicit gap justification.

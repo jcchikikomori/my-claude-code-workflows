@@ -138,6 +138,19 @@ Select and execute files with pattern `docs/plans/tasks/*-task-*.md` that have u
 2. **Investigate existing implementations**: Search for similar functions in same domain/responsibility
 3. **Execute determination**: Determine continue/escalation per "Mandatory Judgment Criteria" above
 
+#### Reference Representativeness (Applied During Implementation)
+
+When adopting a pattern or dependency from existing code, apply coding-principles "Reference Representativeness" at the point of adoption:
+
+□ **Repository-wide verification**: Confirm the pattern or dependency version is representative across the repository (not just the nearest 2-3 files)
+□ **Dependency version verification** (when adopting external dependencies):
+  - Verify repository-wide usage distribution for the same dependency
+  - If following an existing version when alternatives exist, state the reason
+  - If repository-wide verification is insufficient to determine the appropriate version, escalate with `reason: "dependency_version_uncertain"`
+□ **Coexistence resolution**: If multiple versions or patterns coexist, identify the majority before choosing
+
+This is a self-correction check applied each time a pattern or dependency is adopted — not a one-time pre-implementation gate.
+
 #### Implementation Flow (TDD Compliant)
 
 **If all checkboxes already `[x]`**: Report "already completed" and end
@@ -292,6 +305,30 @@ When an Investigation Target file does not exist or the path is stale, escalate 
     "Provide correct file path",
     "Remove this Investigation Target and proceed",
     "Update task file with current paths"
+  ]
+}
+```
+
+#### 2-4. Dependency Version Uncertain Escalation
+When repository-wide verification is insufficient to determine the appropriate dependency version, escalate in following JSON format:
+
+```json
+{
+  "status": "escalation_needed",
+  "reason": "Dependency version uncertain",
+  "taskName": "[Task name being executed]",
+  "escalation_type": "dependency_version_uncertain",
+  "dependency": {
+    "name": "[dependency name]",
+    "versionsFound": ["list of versions found in repository"],
+    "filesChecked": ["file paths where dependency was found"],
+    "ambiguityReason": "[why repository state alone is insufficient — e.g., multiple versions coexist with no clear majority, no existing usage found]"
+  },
+  "user_decision_required": true,
+  "suggested_options": [
+    "Use version X (majority in repository)",
+    "Use version Y (specific reason)",
+    "Research latest stable version and advise"
   ]
 }
 ```

@@ -16,6 +16,10 @@ Executes quality checks and provides a state where all Phases complete with zero
    - Analyze error root causes and execute both auto-fixes and manual fixes autonomously
    - Continue fixing until all phases pass with zero errors, then return approved status
 
+## Input Parameters
+
+- **task_file** (optional): Path to the task file being verified. When provided, read the "Quality Assurance Mechanisms" section and use listed mechanisms as supplementary hints for quality check discovery. This is a hint — primary detection remains code, manifest, and configuration-based.
+
 ## Initial Required Tasks
 
 **Task Registration**: Register work steps using TaskCreate. Always include: first "Confirm skill constraints", final "Verify skill fidelity". Update status using TaskUpdate upon completion.
@@ -47,6 +51,8 @@ Review the diff of changed files to detect stub or incomplete implementations. T
 **If no incomplete implementation is found**: Proceed to Step 2.
 
 ### Step 2: Detect Quality Check Commands
+
+**Primary detection** (always executed):
 ```bash
 # Auto-detect from project manifest files
 # Identify project structure and extract quality commands:
@@ -54,6 +60,12 @@ Review the diff of changed files to detect stub or incomplete implementations. T
 # - Dependency manifest → identify language toolchain (TypeScript, ESLint, Biome, etc.)
 # - Build configuration → extract build/check commands
 ```
+
+**Supplementary detection** (when task_file provided):
+- Read the task file's "Quality Assurance Mechanisms" section
+- For each listed mechanism, verify the tool is available and the configuration exists
+- Add verified mechanisms to the quality check command list
+- If a listed mechanism cannot be found or executed, note it in the output and continue to the next mechanism
 
 ### Step 3: Execute Quality Checks
 Follow frontend-ai-guide skill "Quality Check Workflow" section:
@@ -183,6 +195,16 @@ Before setting status to blocked, confirm specifications in this order:
       "filesCount": 3
     }
   ],
+  "taskFileMechanisms": {
+    "provided": true,
+    "executed": ["mechanism names that were found and executed"],
+    "skipped": [
+      {
+        "mechanism": "mechanism name",
+        "reason": "tool not found / config not found / not executable"
+      }
+    ]
+  },
   "metrics": {
     "totalErrors": 0,
     "totalWarnings": 0,
@@ -225,6 +247,16 @@ Before setting status to blocked, confirm specifications in this order:
     "Fix attempt 2: Tried aligning implementation to test",
     "Fix attempt 3: Tried inferring specification from Design Doc"
   ],
+  "taskFileMechanisms": {
+    "provided": true,
+    "executed": ["mechanisms executed before blocking"],
+    "skipped": [
+      {
+        "mechanism": "mechanism name",
+        "reason": "tool not found / config not found / not executable"
+      }
+    ]
+  },
   "needsUserDecision": "Please confirm the correct button disabled behavior"
 }
 ```
@@ -242,6 +274,16 @@ Before setting status to blocked, confirm specifications in this order:
       "resolutionSteps": ["Create seed script for E2E test player", "Add subscription record to seed"]
     }
   ],
+  "taskFileMechanisms": {
+    "provided": true,
+    "executed": ["mechanisms executed before blocking"],
+    "skipped": [
+      {
+        "mechanism": "mechanism name",
+        "reason": "tool not found / config not found / not executable"
+      }
+    ]
+  },
   "testsSkipped": 3,
   "testsPassedWithoutPrerequisites": 47
 }

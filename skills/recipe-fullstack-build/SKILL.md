@@ -103,7 +103,7 @@ For EACH task, YOU MUST:
      - `needs_revision` → Return to step 2 with `requiredFixes`
      - `approved` → Proceed to step 4
    - `readyForQualityCheck: true` → Proceed to step 4
-4. **INVOKE quality-fixer**: Execute all quality checks and fixes (layer-appropriate per routing table)
+4. **INVOKE quality-fixer**: Execute all quality checks and fixes (layer-appropriate per routing table). **Always pass** the current task file path as `task_file`
 5. **CHECK quality-fixer response**:
    - `stub_detected` → Return to step 2 with `incompleteImplementations[]` details
    - `blocked` → STOP and escalate to user
