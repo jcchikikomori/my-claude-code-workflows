@@ -125,7 +125,7 @@ Keywords determine test type and reduce ambiguity.
 
 ### Fact Disposition Table
 
-One row per `codebase-analyzer.focusAreas` entry. This table is the single binding between existing-behavior facts and the design — other sections that describe existing behavior reference the row by Focus Area name.
+One row per codebase analysis `focusAreas` entry. This table is the single binding between existing-behavior facts and the design — other sections that describe existing behavior reference the row by Focus Area name.
 
 | Fact ID | Focus Area | Disposition | Rationale | Evidence |
 |---------|------------|-------------|-----------|----------|
