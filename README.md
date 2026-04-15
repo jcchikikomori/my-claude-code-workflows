@@ -11,6 +11,8 @@
 
 ## ⚡ Quick Start
 
+> **Windows:** This repo uses symlinks. Git doesn't create them by default. Use WSL, or clone with `git clone -c core.symlinks=true` in an admin PowerShell, then install plugins from the local clone. Admin is only needed for initial setup.
+
 This marketplace includes the following plugins:
 
 **Core plugins:**
