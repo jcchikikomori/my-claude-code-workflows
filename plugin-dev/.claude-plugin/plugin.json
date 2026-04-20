@@ -1,6 +1,6 @@
 {
   "name": "dev",
-  "version": "0.16.14-jcc.6",
+  "version": "0.16.14-jcc.7",
   "description": "Skills + Subagents for development — covers web, mobile, and integrations. Use skills for coding guidance, or run recipe workflows for full orchestrated agentic coding with backend, frontend, and full-stack agent variants.",
   "author": {
     "name": "John Cyrill Corsanes",
@@ -49,6 +49,7 @@
     "./agents/technical-designer-frontend.md",
     "./agents/ui-spec-designer.md",
     "./agents/verifier.md",
-    "./agents/work-planner.md"
+    "./agents/work-planner.md",
+    "./agents/pr-reviewer.md"
   ]
 }
