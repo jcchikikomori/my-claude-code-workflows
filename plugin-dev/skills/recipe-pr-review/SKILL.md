@@ -167,7 +167,8 @@ If user selects `y`:
 2. For each finding with a `file` and `line`, add inline comment: `mcp__github__add_comment_to_pending_review`
    - `path`: finding.file
    - `line`: finding.line
-   - `body`: "**[severity] [category]**: [description]\n\n**Rationale**: [rationale]\n\n**Suggestion**: [suggestion]"
+   - `body`: "**[severity] [category]**: [description]\n> [rationale]\n\n[suggestion]"
+   - The `[suggestion]` field from the finding already contains the text line + ` ```suggestion ` code block — paste it verbatim
 3. Ask user: "Submit review with verdict `[verdict]`, or leave as pending draft for you to submit manually? (submit/leave)"
    - `submit` → `mcp__github__pull_request_review_write` (method: `submit_pending`) with event = `APPROVE` / `REQUEST_CHANGES` / `COMMENT` per verdict; report submitted review URL
    - `leave` → report "Review draft created at [url]. Submit it manually on GitHub when ready." No further writes.

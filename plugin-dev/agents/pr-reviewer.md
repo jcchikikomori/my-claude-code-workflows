@@ -11,6 +11,27 @@ Operates in an independent context, executing autonomously until task completion
 
 **Source of truth**: Codebase patterns provided in context. You are NOT validating against a Design Doc. You validate against the conventions and patterns already established in this codebase, supplemented by prior review learnings.
 
+## Writing Style
+
+All finding fields must be terse and direct. Write for senior developers — no hand-holding, no padding.
+
+| Field | Max length | Pattern |
+|-------|-----------|---------|
+| `description` | ≤15 words | `[what] [where]` — e.g. "Null deref if user not found on line 42" |
+| `rationale` | ≤12 words | `[why this breaks/matters]` — e.g. "Crashes in production when DB returns null" |
+| `suggestion` (text) | ≤10 words | `[what to do]` — e.g. "Add null guard before access" |
+
+For `suggestion`: always append a ` ```suggestion ` code block after the text line containing the corrected code. The block must show only the affected line(s) — the exact replacement the developer can accept with one click.
+
+```
+Add null guard before access
+\`\`\`suggestion
+const name = user?.name ?? 'Unknown';
+\`\`\`
+```
+
+If no single-line fix applies (e.g. architectural issues), omit the code block and keep text only.
+
 ## Initial Required Tasks
 
 **Task Registration**: Register work steps using TaskCreate. Always include: first "Confirm skill constraints", final "Verify skill fidelity". Update status using TaskUpdate upon completion.
@@ -215,3 +236,6 @@ Return the JSON result as the final response. See Output Format for the schema.
 - [ ] Security critical findings are never omitted even if context is ambiguous — flag and note uncertainty in rationale
 - [ ] `conventionsDetected` reflects what was actually observed in context, not assumed
 - [ ] Prior learning findings include a reference to the original learning in the rationale
+- [ ] `description` ≤15 words, `rationale` ≤12 words, `suggestion` text ≤10 words
+- [ ] Every fixable finding has a ` ```suggestion ` code block in the suggestion field
+- [ ] ` ```suggestion ` block contains only the corrected replacement line(s), nothing else

@@ -24,6 +24,46 @@ Plugin files are copied directly — no symlinks. Full compatibility across all 
 
 ---
 
+## Recommended Settings
+
+Before using these workflows, configure `~/.claude/settings.json` to pre-approve the read-only commands that orchestrators run automatically. Without these, Claude will prompt for permission on every git inspection call.
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git remote:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(gh repo:*)",
+      "Bash(gh pr:*)"
+    ]
+  }
+}
+```
+
+For PR review workflows that post inline comments, also add:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp__github__pull_request_read",
+      "mcp__github__list_pull_requests",
+      "mcp__github__get_file_contents",
+      "mcp__github__search_code",
+      "mcp__github__pull_request_review_write",
+      "mcp__github__add_comment_to_pending_review"
+    ]
+  }
+}
+```
+
+Merge these into your existing `permissions.allow` array — do not replace it.
+
+---
+
 ## Quick Start
 
 ```bash
@@ -152,6 +192,7 @@ All workflow entry points use the `recipe-` prefix. Type `/recipe-` and use tab 
 | `/recipe-reverse-engineer` | Generate PRD/Design Docs from existing code |
 | `/recipe-update-doc` | Update existing design documents |
 | `/recipe-generate-claude-md` | Generate a CLAUDE.md for a project |
+| `/recipe-pr-review` | Review a PR from another developer with codebase context |
 
 ### QA (plugin: qa)
 
@@ -164,7 +205,7 @@ All workflow entry points use the `recipe-` prefix. Type `/recipe-` and use tab 
 
 ## Specialized Agents
 
-### plugin-dev Agents (23)
+### plugin-dev Agents (27)
 
 | Agent | What It Does |
 |-------|--------------|
@@ -183,6 +224,7 @@ All workflow entry points use the `recipe-` prefix. Type `/recipe-` and use tab 
 | **quality-fixer-frontend** | Handles React-specific tests, TypeScript checks, and builds |
 | **code-verifier** | Validates consistency between documentation and code |
 | **code-reviewer** | Checks code against design docs for completeness |
+| **pr-reviewer** | Reviews a PR diff against codebase patterns — no Design Doc needed |
 | **document-reviewer** | Reviews document quality and rule compliance |
 | **design-sync** | Verifies consistency across multiple Design Docs |
 | **security-reviewer** | Reviews implementation for security compliance |
@@ -191,6 +233,8 @@ All workflow entry points use the `recipe-` prefix. Type `/recipe-` and use tab 
 | **solver** | Generates solutions with tradeoff analysis |
 | **rule-advisor** | Picks the best coding rules for your current task |
 | **claude-md-generator** | Generates a CLAUDE.md by analyzing project structure and stack |
+| **context-keeper** | Captures gotchas, learnings, and corrections to persist across sessions |
+| **context-scouter** | Loads accumulated project memory for agents to consume at session start |
 
 ### plugin-qa Agents (3)
 
