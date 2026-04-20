@@ -1,0 +1,23 @@
+{
+  "skill_name": "coverage-quality",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just finished writing a new Django REST API. Can you run a coverage check on my project and show me where I stand?",
+      "expected_output": "Initial baseline report for Python project. No comparison (no baseline exists). Runs 'coverage run -m pytest && coverage json', parses it, saves baseline to .coverage-snapshot/baseline.json, adds .coverage-snapshot/ to .gitignore, shows all files with per-file percentages and missing lines.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I just refactored the auth middleware and updated some helper functions. Did I break any coverage? Show me what degraded.",
+      "expected_output": "Diff-check report for changed files only. Reads existing baseline, runs coverage, compares using git diff to scope to changed files. Shows delta per file with emoji severity, lists specific missing line numbers, renders Actions section with test recommendations.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Give me a full coverage quality report for my entire JS project. I want to see all files sorted by worst coverage first.",
+      "expected_output": "Full-report mode for JavaScript/Jest project. Runs jest --coverage, parses Istanbul JSON, compares all files vs baseline, sorts by coverage ascending (worst first). Shows overall delta, all files below threshold, Actions section.",
+      "files": []
+    }
+  ]
+}

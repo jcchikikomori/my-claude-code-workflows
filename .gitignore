@@ -20,6 +20,11 @@ Thumbs.db
 .claude/
 CLAUDE.md
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
 # Temporary Files
 tmp/
 temp/
