@@ -18,7 +18,7 @@ Thumbs.db
 
 # Claude Code (auto-generated)
 .claude/
-CLAUDE.md
+!.claude/settings.json
 
 # Python
 __pycache__/
