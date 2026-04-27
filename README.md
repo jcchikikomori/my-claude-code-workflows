@@ -122,6 +122,7 @@ For fullstack projects:
 | `qa` | product-quality | Agent-driven recipes for acceptance tests, E2E, and browser-layer QA |
 | `env-guard` | behavior-control | Hook enforcement to prevent leaking `.env` and secrets |
 | `claude-attribution` | governance | Ensures all external posts carry "🤖 Written by Claude, reviewed by \<user\>" attribution |
+| `markdown-format` | quality-enforcement | PostToolUse hook that runs `markdownlint-cli2 --fix` on every `.md` write — non-blocking |
 | `metronome` | behavior-control | Detects shortcut-taking and nudges Claude to proceed step by step |
 | `discover` | product-quality | Turns feature ideas into evidence-backed PRDs through structured discovery |
 | `caveman` | behavior-control | A plugin that makes agent talk like caveman |
@@ -131,6 +132,9 @@ The `dev` and `qa` plugins cover **workflow orchestration** — how to plan, bui
 ```bash
 # Governance
 /plugin install claude-attribution@claude-workflow
+
+# Markdown auto-formatting
+/plugin install markdown-format@claude-workflow
 
 # External add-ons
 /plugin install metronome@claude-workflow
@@ -310,6 +314,17 @@ claude-workflow/
 │   └── .claude-plugin/
 │       └── plugin.json
 │
+├── plugin-markdown-format/       # markdown-format plugin — auto-fix .md files on write
+│   ├── config/
+│   │   └── .markdownlint.json    # Bundled ruleset (MD013/041/033 off, MD024 siblings_only)
+│   ├── hooks/
+│   │   ├── hooks.json            # PostToolUse hook on Write|Edit|MultiEdit
+│   │   └── markdown_format_hook.py  # Runs markdownlint-cli2 --fix, always exits 0
+│   ├── skills/
+│   │   └── markdown-format/SKILL.md
+│   └── .claude-plugin/
+│       └── plugin.json
+│
 ├── LICENSE
 └── README.md
 ```
@@ -365,6 +380,43 @@ The hook intercepts these Bash patterns:
 
 ---
 
+## markdown-format
+
+`markdown-format` silently fixes markdown lint errors in every `.md` file Claude writes or edits.
+It works via a **PostToolUse hook** — `markdownlint-cli2 --fix` runs after each write and is
+completely non-blocking. The companion skill also teaches Claude to write clean markdown from
+the start.
+
+### How it works
+
+- A **PostToolUse hook** fires on `Write`, `Edit`, and `MultiEdit` for `.md` files
+- Runs `markdownlint-cli2 --fix` with a bundled config tuned for LLM-generated markdown
+- Accepts exit codes 0 and 1 (unfixable violations) as success — writes are never blocked
+- Tries a globally installed `markdownlint-cli2` binary first; falls back to `npx markdownlint-cli2`
+
+### Bundled config
+
+| Rule | Setting | Reason |
+| ---- | ------- | ------ |
+| MD013 | disabled | LLMs don't wrap at 80 chars — enforcing creates noisy diffs |
+| MD041 | disabled | Fragments and skill files legitimately lack a leading H1 |
+| MD033 | disabled | Claude emits valid HTML (badges, `<details>`, table cells) |
+| MD024 | `siblings_only` | Same-name headings allowed under different parents |
+
+### Setup
+
+```bash
+/plugin install markdown-format@claude-workflow
+
+# Optional: install globally to skip npx download overhead on first run
+npm install -g markdownlint-cli2
+```
+
+To override rules for a specific project, place a `.markdownlint.json` in the project root —
+`markdownlint-cli2` picks it up automatically and the bundled config is not applied.
+
+---
+
 ## FAQ
 
 **Q: Which plugin should I install?**
@@ -390,6 +442,10 @@ It adds a security enforcement layer that blocks Claude from reading or leaking 
 **Q: What does claude-attribution do?**
 
 It ensures every external post (GitHub PRs, JIRA comments, Slack messages, etc.) carries a "🤖 Written by Claude, reviewed by \<name\>" attribution line. A PreToolUse hook blocks posts missing the line, and a companion skill ensures Claude shows the post to you for approval before sending.
+
+**Q: What does markdown-format do?**
+
+It auto-fixes lint errors in `.md` files after every write. A PostToolUse hook runs `markdownlint-cli2 --fix` silently — no writes are ever blocked. Requires Node.js; `npx` handles the download automatically on first use so no global install is needed.
 
 ---
 

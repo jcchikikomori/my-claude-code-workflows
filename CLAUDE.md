@@ -46,6 +46,7 @@ All three must be kept in sync. Update them together whenever the version change
 ### Independently versioned plugins
 
 - `plugin-attribution/.claude-plugin/plugin.json` — uses plain SemVer (`0.1.0`, `0.2.0`, ...), **not** the fork-qualified `jcc.N` scheme, because it is an original plugin with no upstream counterpart.
+- `plugin-markdown-format/.claude-plugin/plugin.json` — same plain SemVer scheme, original plugin with no upstream counterpart.
 
 ### When to bump versions
 
@@ -95,9 +96,27 @@ Always reload after installing, updating, or switching plugins within the same s
 | `qa` | product-quality | Agent-driven recipes for acceptance tests, E2E, and browser-layer QA |
 | `env-guard` | behavior-control | Hook enforcement to prevent leaking .env and secrets |
 | `claude-attribution` | governance | Hook + skill ensuring all MCP-posted content carries a "Written by Claude, reviewed by \<user\>" attribution line |
+| `markdown-format` | quality-enforcement | PostToolUse hook + skill — runs `markdownlint-cli2 --fix` on every `.md` write; non-blocking |
 | `skills` ([skills-md](https://github.com/jcchikikomori/skills-md)) | language/framework rules | Technology-specific coding standards — Ruby, Python, React, Node.js, Docker, etc. |
 
 The `dev` and `qa` plugins cover **workflow orchestration** — how to plan, build, and verify software using AI agents. The `skills` plugin (from the separate `skills-md` repo) covers **language and framework rules** — what good code looks like in a given technology. They complement each other and can be installed together.
+
+### markdown-format plugin
+
+**Purpose:** Auto-fixes markdown lint errors in `.md` files written or edited by Claude.
+
+**How it works:**
+
+- A `PostToolUse` hook fires after every `Write`, `Edit`, or `MultiEdit` on a `.md` file.
+- Runs `markdownlint-cli2 --fix` with a bundled config (MD013, MD041, MD033 disabled; MD024 siblings_only).
+- Never blocks — exits 0 regardless of result so no write is ever prevented.
+- Binary resolution: tries global `markdownlint-cli2` first, falls back to `npx markdownlint-cli2`.
+
+**Tooling note:** Uses [`markdownlint-cli2`](https://github.com/DavidAnson/markdownlint-cli2) (DavidAnson's CLI, same author as the core `markdownlint` library). Do **not** substitute `markdownlint-cli` (igorshubovych's package, binary `markdownlint`) — it is a different package with a different interface.
+
+**Requirements:** Node.js + npm (for `npx` fallback). Optional: `npm install -g markdownlint-cli2` to skip npx download overhead.
+
+---
 
 ### claude-attribution plugin
 
@@ -235,6 +254,7 @@ plugin-dev/                       # dev plugin — web, mobile, integrations (DE
 plugin-qa/                        # qa plugin — web, mobile, integration testing (QA agents + skills)
 plugin-env-guard/                 # env-guard plugin — secrets leak prevention
 plugin-attribution/               # claude-attribution plugin — AI authorship attribution on MCP posts
+plugin-markdown-format/           # markdown-format plugin — auto-fix markdown lint issues on write
 ```
 
 Each plugin owns its agents and skills directly — no shared root directories, no symlinks. To update an agent or skill, edit it in the plugin directory where it belongs (`plugin-dev/agents/`, `plugin-qa/skills/`, etc.).

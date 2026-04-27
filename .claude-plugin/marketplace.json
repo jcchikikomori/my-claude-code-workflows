@@ -71,6 +71,12 @@
       "source": "./plugin-attribution",
       "description": "Appends '🤖 Written by Claude, reviewed by <user>' attribution to all external posts via any MCP-connected platform",
       "category": "governance"
+    },
+    {
+      "name": "markdown-format",
+      "source": "./plugin-markdown-format",
+      "description": "Auto-formats .md files after Claude writes or edits them using markdownlint-cli2 --fix — silently corrects LLM-generated markdown errors",
+      "category": "quality-enforcement"
     }
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "description": "Auto-formats .md files after Claude writes or edits them using markdownlint-cli2 --fix",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/markdown_format_hook.py"
+          }
+        ]
+      }
+    ]
+  }
+}
