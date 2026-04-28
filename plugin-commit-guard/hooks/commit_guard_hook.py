@@ -23,6 +23,10 @@ TOKEN_FILE = Path.home() / ".claude" / ".commit-guard-token"
 
 GIT_COMMIT_PATTERN = re.compile(r"\bgit\s+commit\b")
 
+# Matches single- and double-quoted strings — used to strip quoted content
+# before pattern matching so `git commit` inside a string arg doesn't trigger.
+QUOTED_STRING_PATTERN = re.compile(r'"[^"]*"|\'[^\']*\'')
+
 BLOCKED_MESSAGE = """\
 [commit-guard] BLOCKED: git commit requires user approval.
 
@@ -81,7 +85,8 @@ def main() -> None:
 
     command: str = tool_input.get("command", "")
 
-    if not GIT_COMMIT_PATTERN.search(command):
+    unquoted = QUOTED_STRING_PATTERN.sub("", command)
+    if not GIT_COMMIT_PATTERN.search(unquoted):
         sys.exit(0)
 
     token = read_token()

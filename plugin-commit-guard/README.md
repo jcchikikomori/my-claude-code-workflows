@@ -35,6 +35,10 @@ The hook never modifies the commit command. If your repository requires signed c
 
 ## Changelog
 
+### 0.1.1
+
+Fix: strip quoted strings before `git commit` detection — prevents the approval token-write command from falsely triggering the hook.
+
 ### 0.1.0
 
 Initial release. Per-commit approval flow with one-time SHA256 token. GPG signing preserved.
