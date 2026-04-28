@@ -1,6 +1,6 @@
 {
   "name": "qa",
-  "version": "0.16.14-jcc.11",
+  "version": "0.16.14-jcc.12",
   "description": "Skills + Subagents for QA — covers web, mobile, and integration testing. Run recipe workflows for orchestrated test generation and browser-layer QA, or load skills for targeted testing guidance.",
   "author": {
     "name": "John Cyrill Corsanes",
@@ -19,12 +19,15 @@
     "e2e",
     "web",
     "mobile",
-    "integrations"
+    "integrations",
+    "backend",
+    "api"
   ],
   "agents": [
     "./agents/acceptance-test-generator.md",
     "./agents/integration-test-reviewer.md",
-    "./agents/web-qa-reviewer.md"
+    "./agents/web-qa-reviewer.md",
+    "./agents/api-endpoint-tester.md"
   ],
   "skills": [
     "./skills/coverage-quality"
